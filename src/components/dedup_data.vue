@@ -6,8 +6,8 @@
         图片，选择相似度阈值，点击提交即可</p>
         <form @submit.prevent="uploadFile">
         <input type="file" ref="fileInput" accept=".zip,.rar,.7z"  class="file-input" required />
-        <label for="fps" style="font-size: 13px;">输入相似度阈值</label>
-        <input type="number" id="splitRatio" v-model="splitRatio" min="1" max="100" step="0.1" class="form-control" style="margin: 20px;">
+        <label for="simThresh" style="font-size: 13px;">输入相似度阈值</label>
+        <input type="number" id="simThresh" v-model="simThresh" min="1" max="10" step="1" class="form-control" style="margin: 20px;">
         <button type="submit" class="submit-button">提交</button>
       </form>
       <p v-if="message">{{ message }}</p>
@@ -37,7 +37,7 @@ export default {
 
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('splitRatio', this.splitRatio)
+      formData.append('simThresh', this.simThresh)
 
       try {
         // Show loading or processing message
