@@ -3,7 +3,7 @@
     <div class="outside">
     <div class="son">
         <HelloWorld msg="Welcome to Your Vue.js App"/>
-        <table align="center"  width="600px" cellpadding="8" border="1">
+        <table align="center"  width="600px" cellpadding="8">
             <tbody>
             <tr align="center" width="400px">
                 <th colspan="5">
