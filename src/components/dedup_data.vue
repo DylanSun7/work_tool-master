@@ -7,7 +7,7 @@
         <form @submit.prevent="uploadFile">
         <input type="file" ref="fileInput" accept=".zip,.rar,.7z"  class="file-input" required />
         <label for="simThresh" style="font-size: 13px;">输入相似度阈值</label>
-        <input type="number" id="simThresh" v-model="simThresh" min="1" max="10" step="1" class="form-control" style="margin: 20px;">
+        <input type="number" id="simThresh" v-model="simThresh" min="1" max="11" step="1" class="form-control" style="margin: 20px;">
         <button type="submit" class="submit-button">提交</button>
       </form>
       <p v-if="message">{{ message }}</p>
@@ -21,7 +21,7 @@ import { saveAs } from 'file-saver'; //保存文件的库
 export default {
   data() {
     return {
-      splitRatio: 10, //默认阈值10
+      simThresh: 1, //默认阈值1
       message: '' // 用于存储并显示给用户的消息
     };
   },
