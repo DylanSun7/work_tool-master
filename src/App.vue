@@ -72,15 +72,15 @@
                         <button class="dropbtn">算法处理工具</button>
                         <div class="dropdown-content">
                             
-                            <!-- 功能2.1：xxx -->
+                            <!-- 功能2.1：图片去重 -->
                             <li style="list-style-type: none;">
                                 <div>
                                     <div class="mask" v-if="box21" @click="box21 = false"></div>
                                     <div class="pop" v-if="box21">
                                         <button @click="box21 = false" class="close-btn">&times;</button>
-                                        <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
+                                        <dedup_data :someProp="dedupdatavalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
-                                    <button @click="box21 = true" class="btn">图片损坏检测</button> <!--功能标签按钮-->
+                                    <button @click="box21 = true" class="btn">图片去重</button> <!--功能标签按钮-->
                                 </div>
                             </li>
 
@@ -171,13 +171,15 @@
 import check_file from './components/check_file.vue';
 import split_data from './components/split_data.vue';
 import cut_video from './components/cut_video.vue';
+import  dedup_data from './components/dedup_data.vue';
 
 export default {
   name: 'App',
   components: {
     check_file,
     split_data,
-    cut_video
+    cut_video,
+    dedup_data
   },
   data(){
     return {
@@ -187,6 +189,7 @@ export default {
       cutvideovalue: "someValue",
       fps: 1,
       fileExt: "someValue",
+      dedupdatavalue:" someValue",
       box11: false,     /*功能模组匹配按钮*/
       box12: false,
       box13: false,
