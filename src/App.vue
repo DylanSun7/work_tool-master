@@ -60,6 +60,19 @@
                                     <button @click="box13 = true" class="btn">视频抽帧工具</button> <!--功能标签按钮-->
                                 </div>
                             </li>
+
+                             <!-- 功能1.4：图片去重 -->
+                             <li>
+                                <div>
+                                    <div class="mask" v-if="box14" @click="box14 = false"></div>
+                                    <div class="pop" v-if="box14">
+                                        <button @click="box14 = false" class="close-btn">&times;</button>
+                                        <dedup_data :someProp="dedupdatavalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
+                                    </div>
+                                    <button @click="box14 = true" class="btn">图片去重</button> <!--功能标签按钮-->
+                                </div>
+                            </li>
+
                         </ul>
                     </div>
                 </th>
@@ -72,7 +85,7 @@
                         <button class="dropbtn">算法处理工具</button>
                         <div class="dropdown-content">
                             
-                            <!-- 功能2.1：图片去重 -->
+                            <!-- 功能2.1：xxx -->
                             <li style="list-style-type: none;">
                                 <div>
                                     <div class="mask" v-if="box21" @click="box21 = false"></div>
@@ -80,7 +93,7 @@
                                         <button @click="box21 = false" class="close-btn">&times;</button>
                                         <dedup_data :someProp="dedupdatavalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
-                                    <button @click="box21 = true" class="btn">图片去重</button> <!--功能标签按钮-->
+                                    <button @click="box21 = true" class="btn">xxx</button> <!--功能标签按钮-->
                                 </div>
                             </li>
 
@@ -92,7 +105,7 @@
                                         <button @click="box22 = false" class="close-btn">&times;</button>
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
-                                    <button @click="box22 = true" class="btn">图片损坏检测</button> <!--功能标签按钮-->
+                                    <button @click="box22 = true" class="btn">xxx</button> <!--功能标签按钮-->
                                 </div>
                             </li>
 
@@ -104,7 +117,7 @@
                                         <button @click="box23 = false" class="close-btn">&times;</button>
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
-                                    <button @click="box23 = true" class="btn">图片损坏检测</button> <!--功能标签按钮-->
+                                    <button @click="box23 = true" class="btn">xxx</button> <!--功能标签按钮-->
                                 </div>
                             </li>
                             
@@ -127,7 +140,7 @@
                                         <button @click="box31 = false" class="close-btn">&times;</button>
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
-                                    <button @click="box31 = true" class="btn">图片损坏检测</button> <!--功能标签按钮-->
+                                    <button @click="box31 = true" class="btn">xxx</button> <!--功能标签按钮-->
                                 </div>
                             </li>
 
@@ -139,7 +152,7 @@
                                         <button @click="box32 = false" class="close-btn">&times;</button>
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
-                                    <button @click="box32 = true" class="btn">图片损坏检测</button> <!--功能标签按钮-->
+                                    <button @click="box32 = true" class="btn">xxx</button> <!--功能标签按钮-->
                                 </div>
                             </li>
 
@@ -151,7 +164,7 @@
                                         <button @click="box33 = false" class="close-btn">&times;</button>
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
-                                    <button @click="box33 = true" class="btn">图片损坏检测</button> <!--功能标签按钮-->
+                                    <button @click="box33 = true" class="btn">xxx</button> <!--功能标签按钮-->
                                 </div>
                             </li>
 
@@ -193,6 +206,7 @@ export default {
       box11: false,     /*功能模组匹配按钮*/
       box12: false,
       box13: false,
+      box14: false,
       box21: false,
       box22: false,
       box23: false,
