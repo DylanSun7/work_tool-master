@@ -123,6 +123,7 @@ font-size: 18px;
 border-radius: 18px;
 border: none;
 cursor: pointer;
+
 }   
 
 /*鼠标靠近后颜色*/
@@ -130,6 +131,14 @@ cursor: pointer;
   background-color: #007bffcf;
 }
 
+.out-btn-div{
+  display: flex;
+  text-align: center;
+}
+
+.btn-div{
+  flex : 1;
+}
 body,div{
 box-sizing:border-box;
 margin:0;

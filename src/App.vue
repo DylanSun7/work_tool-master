@@ -4,7 +4,7 @@
     <div class="outside">
     <div class="son">
         <HelloWorld msg="Welcome to Your Vue.js App"/>
-        <table align="center"  width="600px" cellpadding="8" border="1">
+        <table align="center"  width="600px" cellpadding="8">
             <tbody>
             <tr align="center" width="400px">
                 <th colspan="5">
@@ -18,15 +18,17 @@
                     <h1>处理工具平台</h1>
                 </th>
             </tr>
-            <tr >
-                <th >
-                    <div ref="term1" @click.stop="isshow1 = !isshow1">
+        </tbody>
+        </table>
+        <div class="out-btn-div">
+        <div class="btn-div">
+        <div  ref="term1" @click.stop="isshow1 = !isshow1">
                         <div><button class="dropbtn">数据处理工具</button></div>
                     </div>
                     <div v-show="isshow1"  ref="drop1">
 
                             <!-- 功能1.1：图片损坏检测 -->
-                        
+                            <li style="height: 10px;"></li>
                             <li>
                                 <div>
                                     <div class="mask" v-if="box11" @click="box11 = false"></div>      <!--修改对应的模组尾数box_,必须相同-->
@@ -74,14 +76,10 @@
                                 </div>
                             </li>
 
-                        
                     </div>
-                </th>
+                    </div>
 
-                <th width="2px">
-                    <!--空-->
-                </th>
-                <th>
+                    <div class="btn-div">
                     <div ref="term2" @click.stop="isshow2 = !isshow2">
                         <button class="dropbtn">算法处理工具</button>
                     </div>
@@ -124,15 +122,13 @@
                             </li>
                             
                         </div>
-                    
-                </th>
-                <th width="2px">
-                    <!--空-->
-                </th>
-                <th>
-                    <div ref="term3" @click.stop="isshow3 = !isshow3">
+                        </div>
+
+                        
+                        <div class="btn-div">
+                        <div ref="term3" @click.stop="isshow3 = !isshow3">
                         <button class="dropbtn">其他处理工具</button>
-                    </div>
+                        </div>
                         <div v-show="isshow3"  ref="drop3">
                            
                              <!-- 功能3.1：xxx -->
@@ -172,11 +168,8 @@
                             </li>
 
                         </div>
-                    
-                </th>
-            </tr>
-        </tbody>
-        </table>
+                        </div>
+            </div>
         </div>
         </div>
     </div>
