@@ -126,8 +126,9 @@ cursor: pointer;
 }   
 
 /*鼠标靠近后颜色*/
-
-
+.dropbtn:hover{
+  background-color: #007bffcf;
+}
 
 body,div{
 box-sizing:border-box;
@@ -189,6 +190,7 @@ padding:0;
   padding:  16px;
   border: 1px;
   color: white;
+  font-size: 0.9em;
 }
 .btn:hover{
   background-color: #006fb4;
@@ -209,4 +211,9 @@ padding:0;
 }
 .close-span{
   font-size: 28px
+}
+
+li{
+  list-style-type: none;
+  height: 70px;
 }
