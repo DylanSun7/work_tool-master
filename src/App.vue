@@ -70,7 +70,7 @@
                                     <div class="mask" v-if="box14" @click="box14 = false"></div>
                                     <div class="pop" v-if="box14">
                                         <button @click="box14 = false" class="close-btn">&times;</button>
-                                        <dedup_data :someProp="dedupdatavalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
+                                        <dedup_data :someProp="dedupdatavalue" @custom-event="handleDedupdataEvent" />  <!--功能链接-->
                                     </div>
                                     <button @click="box14 = true" class="btn">>>图片去重<<</button> <!--功能标签按钮-->
                                 </div>
@@ -230,6 +230,9 @@ export default {
       console.log('Custom event triggered with:', data);
     },
     handleCutvideoEvent(data){
+        console.log('Custom event triggered with:', data);
+    },
+    handleDedupdataEvent(data){
         console.log('Custom event triggered with:', data);
     },
     //当点击菜单以外的区域隐藏菜单
