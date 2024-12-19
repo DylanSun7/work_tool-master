@@ -36,6 +36,12 @@ export default {
       const fileInput = this.$refs.fileInput;
       const file = fileInput.files[0];
 
+      //获取当前系统时间，用于文件重命名
+      var hour=new Date().getHours();
+      var minute=new Date().getMinutes();
+      var second=new Date().getSeconds();
+      var NowTime=(hour>=10?hour:'0'+hour)+':'+(minute>=10?minute:'0'+minute)+':'+(second>=10?second:'0'+second);
+
       if (!file) {
         this.message = 'Please select a file.';
         return;
@@ -58,7 +64,7 @@ export default {
         });
 
         // 使用 FileSaver.js 直接保存文件
-        saveAs(response.data, 'result.zip');
+        saveAs(response.data, 'result' + NowTime + '.zip');
 
         // 显示下载成功的消息
         this.message = '文件处理完成.';

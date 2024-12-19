@@ -86,7 +86,8 @@
                         <div v-show="isshow2"  ref="drop2">
                             
                             <!-- 功能2.1：xxx -->
-                            <li style="list-style-type: none;">
+                            <li style="height: 10px;"></li>
+                            <li>
                                 <div>
                                     <div class="mask" v-if="box21" @click="box21 = false"></div>
                                     <div class="pop" v-if="box21">
@@ -132,6 +133,7 @@
                         <div v-show="isshow3"  ref="drop3">
                            
                              <!-- 功能3.1：xxx -->
+                             <li style="height: 10px;"></li>
                              <li>
                                 <div>
                                     <div class="mask" v-if="box31" @click="box31 = false"></div>
