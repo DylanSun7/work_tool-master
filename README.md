@@ -6,6 +6,6 @@
         获取当前系统时间进行重命名，重命名格式：result+当前系统时间+.zip<br>
         <br>
 修改文件：<br>
-&nbspcss文件<br>
-&nbspApp.vue<br>
-&nbspcomponents目录下的check_file.vue  cut_video.vue  dedup_data.vue  split_data.vue<br>
+<p>&nbsp; css文件<br>
+&nbsp; App.vue<br>
+&nbsp; components目录下的check_file.vue &nbsp; cut_video.vue &nbsp; dedup_data.vue &nbsp; split_data.vue<br></p>
