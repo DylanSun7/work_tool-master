@@ -7,4 +7,3 @@
 修改文件：<br>
 <p>&nbsp; css文件<br>
 &nbsp; App.vue<br>
-<--!&nbsp; components目录下的check_file.vue &nbsp; cut_video.vue &nbsp; dedup_data.vue &nbsp; split_data.vue<br></p>-->
