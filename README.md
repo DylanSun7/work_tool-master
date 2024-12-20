@@ -4,6 +4,6 @@
   1.弹窗关闭按钮修改<br>
   &nbsp;弹窗打开后，只能通过点击关闭按钮关闭弹窗<br>
         <br>
-修改文件：<br>
+#修改文件：<br>
 <p>&nbsp; css文件<br>
 &nbsp; App.vue<br>
