@@ -226,3 +226,20 @@ li{
   z-index: 2;
   border-radius: 10px;
 }
+
+/*拖拽上传框样式*/
+.file-uploader {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 100px;
+  text-align: center;
+  width: 500px;
+  margin: 0 auto;
+}
+.file-uploader:hover {
+  background-color: #f9f9f9;
+}
+progress {
+  width: 100%;
+  margin-top: 10px;
+}
