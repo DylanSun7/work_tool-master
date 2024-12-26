@@ -5,12 +5,12 @@
     <div class="outside">
     <div class="son">
         <HelloWorld msg="Welcome to Your Vue.js App"/>
-        <table align="center"  width="600px" cellpadding="8">
+        <table align="center"  width="60%" cellpadding="8">
             <tbody>
-            <tr align="center" width="400px">
+            <tr align="center" width="30%">
                 <th colspan="5">
                     <div class="image-with-title">
-                        <img alt="Vue logo" src="./assets/style/govee.png" width="400px" height="auto" class="image">
+                        <img alt="Vue logo" src="./assets/style/govee.png" width="70%" height="auto" class="image">
                     </div>
                 </th>
             </tr>

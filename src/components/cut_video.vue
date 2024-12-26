@@ -175,6 +175,9 @@ export default {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
         message.value = '文件处理失败';
+        // 清空进度条
+        isUploading.value = false;
+        uploadProgress.value = 0;
       } finally {
         isProcessing.value = false; // 关闭处理状态
         file.value = null; // 清除已选择的文件
