@@ -3,7 +3,7 @@
     <div class="function-module">
     <h2>视频抽帧</h2>
     <p>功能: 将视频转为图片</p>
-    <p>使用说明: 上传含文件的zip格式压缩包文件, 压缩包内应包含一个视频文件夹, 上传成功后选择帧率和图片格式, 点击提交即可</p>
+    <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件（同一个压缩包中可以包含多条视频，进行视频抽帧）,选择好文件后选择帧率和图片格式, 点击提交即可</p>
     </div>
   <div class="middle-window">
     <!-- 文件上传区域 -->
@@ -30,6 +30,7 @@
         <!-- 处理中的加载图片，覆盖进度条 -->
         <div v-if="isProcessing" class="processing-status">
           <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
+          <p class="processing-message">文件正在处理中。。。</p>
         </div>
     </div>
   <!-- 上传按钮，点击后打开文件选择对话框 -->

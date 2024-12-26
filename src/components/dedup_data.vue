@@ -3,7 +3,7 @@
       <div class="function-module">
       <h2>图片去重</h2>
       <p>功能: 剔除相似度高的图片</p>
-      <p>使用说明: 上传含图片的zip格式压缩包文件, 压缩包内应包含一个文件夹, 文件夹内包含要去重的图片，选择相似度阈值，点击提交即可</p>
+      <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件,选择相似度阈值,点击提交即可</p>
       </div>
   <div class="middle-window">
     <!-- 文件上传区域 -->
@@ -31,6 +31,7 @@
         <!-- 处理中的加载图片，覆盖进度条 -->
         <div v-if="isProcessing" class="processing-status">
           <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
+          <p class="processing-message">文件正在处理中。。。</p>
         </div>
     </div>
   <!-- 上传按钮，点击后打开文件选择对话框 -->

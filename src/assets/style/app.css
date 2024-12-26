@@ -299,7 +299,7 @@ progress {
   background-color: #00b1fc;
   border-radius: 8px;
   border: 1px solid blue;
-  padding:  16px;
+  padding:  1%;
   border: 1px;
   color: white;
   font-size: 1.5em;
@@ -336,4 +336,10 @@ progress {
   .loading-image {
     width: 200px; /* 你可以根据需要调整 */
     height: auto;
+    margin-bottom: 10px; /* 使图片和消息之间有一些间距 */
+  }
+  .processing-message {
+    font-size: 16px;
+    color: #5db6ff;
+    font-weight: bold;
   }
