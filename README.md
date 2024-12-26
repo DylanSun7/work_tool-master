@@ -1,22 +1,21 @@
 # work_tool-master
-更新 12.26 14:00<br>
-版本2.0<br>
+更新 12.26 18:50<br>
+版本2.1<br>
 更新内容：<br>
-  1.弹窗关闭按钮修改<br>
-  &nbsp;弹窗打开后，只能通过点击关闭按钮关闭弹窗<br>
+  1.修复错误信息<br>
+  &nbsp;修复当出现“文件处理错误”时，无法继续上传文件的问题<br>
         <br>
-  2.添加文件拖拽上传功能<br>
-  &nbsp;文件可以拖拽至框内进行上传<br>
-        <br>
-  3.文件上传进度条<br>
-  &nbsp;点击提交按钮，文件开始上传，并监听上传进度返回前端<br>
-        <br>
-  4.文件处理信息<br>
-  &nbsp;当文件上传进度达100%，弹出GIF动图和“文件正在处理”信息<br>
-        <br>
-  5.流程图<br>
-  &nbsp;功能流程图显示<br>
-        <br>
+ 1.调整主页logo<br>
+  &nbsp;调整主页logo位置<br>
+  <br>
+  1.设置弹窗自适应<br>
+  &nbsp;设置弹窗，使弹窗内容不会超出窗口<br>
+  <br>
+  
 #修改文件：<br>
-<p>&nbsp; 所有文件均已修改<br>
+<p>&nbsp; css<br>
+<p>&nbsp; check_file.vue<br>
+<p>&nbsp; cut_video.vue<br>
+<p>&nbsp; dedup_data.vue<br>
+<p>&nbsp; split_data.vue<br>
 
