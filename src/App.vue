@@ -23,9 +23,9 @@
         </table>
         <div class="out-btn-div">
         <div class="btn-div">
-        <div  ref="term1" @click.stop="isshow1 = !isshow1">
-                        <div><button class="dropbtn">数据处理工具</button></div>
-                    </div>
+                        <div>
+                          <button class="dropbtn" ref="term1" @click.stop="isshow1 = !isshow1">数据处理工具</button>
+                        </div>
                     <div v-show="isshow1"  ref="drop1">
                         
                             
@@ -56,8 +56,8 @@
                     </div>
 
                     <div class="btn-div">
-                    <div ref="term2" @click.stop="isshow2 = !isshow2">
-                        <button class="dropbtn">算法处理工具</button>
+                    <div>
+                        <button class="dropbtn" ref="term2" @click.stop="isshow2 = !isshow2">算法处理工具</button>
                     </div>
                         <div v-show="isshow2"  ref="drop2">
                             
@@ -82,8 +82,8 @@
 
                         
                     <div class="btn-div">
-                        <div ref="term3" @click.stop="isshow3 = !isshow3">
-                        <button class="dropbtn">其他处理工具</button>
+                        <div>
+                        <button class="dropbtn" ref="term3" @click.stop="isshow3 = !isshow3">其他处理工具</button>
                         </div>
                         <div v-show="isshow3"  ref="drop3">
                            
