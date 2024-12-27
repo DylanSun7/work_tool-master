@@ -13,6 +13,7 @@
   <br>
   
 #修改文件：<br>
+<p>&nbsp; App.vue<br>
 <p>&nbsp; css<br>
 <p>&nbsp; check_file.vue<br>
 <p>&nbsp; cut_video.vue<br>
