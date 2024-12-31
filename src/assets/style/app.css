@@ -172,11 +172,16 @@ padding:0;
   right: 10px;
   background: none;
   border: none;
-  font-size: 25px;
+  font-size: 35px;
   cursor: pointer;
   color: #ffffff;
   background-color: #ff8f99;
-  border-radius: 8px;
+  border-radius: 9px;
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  justify-content: center;
+  display:flex;
 }
 .close-btn:hover{
   background-color: red;
@@ -242,13 +247,13 @@ li{
   .function-module{
     max-width: 100%;
     margin-top: 1%;
-    background-color: #fffae4;
+    background-color: #fffae4;  
     border-radius: 8px;
   }
   /*功能描述*/
   .function-module p{
     color:#2981e6;
-    font-size:15px;
+    font-size:19px;
     font-weight:bold;
     margin:1%;
   }
@@ -271,6 +276,10 @@ li{
 .file-uploader:hover {
   background-color: #f9f9f9;
 }
+.file-uploader button {
+  position: relative;
+  cursor: pointer;
+}
 progress {
   width: 100%;
   margin-top: 10px;
@@ -283,12 +292,18 @@ progress {
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgb(253, 255, 231); /* 半透明背景，可选 */
-  z-index: 1; /* 确位于之上 */
-  margin-top: 10px;
+  z-index: 2; /* 确位于之上 */
+}
+
+.upload-status-out {
+  justify-content: center;
+  align-items: center;
+  display:flex;
+  margin-top: 20%;
+  flex : 1;
 }
 .upload-status-in  {
   flex : 1;
@@ -296,20 +311,25 @@ progress {
 
 /*提交输入框*/
 .upload-btn {
+  justify-content: center;
+  align-items: center;
   flex : 1;
 }
 
 .upload-btn label{
    color:#2981e6;
-    font-size:15px;
+    font-size:18px;
     font-weight:bold;
     margin:10px;
 }
 .upload-btn p{
     color:#2981e6;
-    font-size:15px;
+    font-size:18px;
     font-weight:bold;
     margin:10px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 /*提交按钮*/
 /* Submit Button */
@@ -335,8 +355,8 @@ progress {
     background-color: #fffff0cf;
     border-radius: 8px;
     margin-bottom: 1%;
-    height: 300%;
   }
+  
 
   /*文件处理时加载图片*/
   .processing-status {
@@ -362,3 +382,182 @@ progress {
     color: #5db6ff;
     font-weight: bold;
   }
+
+  /*输入框*/
+/* 基本样式 */
+.input-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #fff;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+  max-width: 600px; /* 设置最大宽度 */
+  margin-left: 10%;
+}
+
+.input-container:focus-within {
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+}
+
+.input-label {
+  margin-right: 10px;
+  color: #555;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* 自定义数字输入框容器 */
+.number-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 200px;
+}
+
+/* 输入框样式 */
+/* 输入框和选择框的通用样式 */
+.custom-input,
+.custom-select {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 5px;
+  font-size: 16px;
+  /* 将焦点状态下的样式也合并到这里 */
+  border-color: transparent;
+  box-shadow: none;
+  max-width: 400px; /* 设置最大宽度 */
+  margin-left: 10%;
+}
+
+/* 隐藏所有浏览器的默认上下箭头 */
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* 自定义输入框容器 */
+.number-input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* 标签样式 */
+.input-label {
+  margin-right: 10px;
+  color: #555;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* 输入框和按钮的包裹容器 */
+.number-input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+/* 按钮样式 */
+.increment-btn, .decrement-btn {
+  background-color: #f9f9f9;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* 悬停时的按钮样式 */
+.increment-btn:hover, .decrement-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* 激活时的按钮样式 */
+.increment-btn:active, .decrement-btn:active {
+  background-color: #d4d4d4;
+}
+
+/* 选择框的样式 */
+.select-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.select-label {
+  margin-right: 10px;
+  color: #555;
+  font-size: 14px;
+}
+
+.custom-select {
+  appearance: none;
+  background-color: #fff;
+  color: #333;
+  padding: 8px 12px;
+  width: 100%;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23aaa"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+  cursor: pointer;
+}
+
+.custom-select:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+  outline: none;
+}
+
+.custom-select option {
+  background-color: white;
+  color: black;
+  padding: 8px 12px;
+}
+
+.custom-select option:disabled {
+  color: #aaa;
+  font-style: italic;
+}
+
+.custom-select:hover {
+  border-color: #bbb;
+}
+
+.custom-select:active {
+  border-color: #4CAF50;
+}
+
+/* 确保在Firefox中也能隐藏默认的下拉箭头 */
+.custom-select::-ms-expand {
+  display: none;
+}
+
+/* 为WebKit浏览器（如Chrome和Safari）设置额外的样式 */
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  .custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; /* 添加标准属性 */
+  }
+}

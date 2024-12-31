@@ -113,7 +113,7 @@
                                 <!-- 功能1.1：图片损坏检测 -->
                                 <div v-if="showBox11" class="modal">
                                     <div class="modal-content">
-                                        <button @click="closeModal('modal11')" class="close-btn">&times;</button>
+                                        <button @click="closeModal('modal11')" class="close-btn"><div>&times;</div></button>
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
                                 </div>

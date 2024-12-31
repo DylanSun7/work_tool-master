@@ -4,6 +4,7 @@
       <h2>图片去重</h2>
       <p>功能: 剔除相似度高的图片</p>
       <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件,选择相似度阈值,点击提交即可</p>
+      <p>&nbsp;</p>
       </div>
   <div class="middle-window">
     <!-- 文件上传区域 -->
@@ -18,15 +19,22 @@
       class="file-input" required
     />
     <!-- 显示已选择的文件名 -->
-    <p v-if="file">已选择文件：{{ file.name }}</p>
+    <p v-if="file">已选择文件：{{ file.name }} &nbsp;<button @click="openFileInput">重新选择</button></p>
     <p v-else>将文件拖到这里，或者<button @click="openFileInput">点击上传</button></p>
 
     <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
     <div v-if="isUploading" class="upload-status">
+      <div class="upload-status-out">
           <div class="upload-status-in"><p>上传进度：</p></div>
           <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
           <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
         </div>
+            <div>
+              <!-- 显示已选择的文件名 -->
+                 <p v-if="file">{{ file.name }}</p>
+                   <button @click="openFileInput">重新选择</button>
+            </div>
+      </div>
 
         <!-- 处理中的加载图片，覆盖进度条 -->
         <div v-if="isProcessing" class="processing-status">
@@ -36,27 +44,43 @@
     </div>
   <!-- 上传按钮，点击后打开文件选择对话框 -->
   <div class="upload-btn">
-    <li>
+    
     <form @submit.prevent="handleFormSubmit">
-      <label for="simThresh" style="font-size: 13px;">输入相似度阈值：</label>
-      <input type="number" id="simThresh" v-model="simThresh" min="1" max="11" step="1" class="form-control" style="margin: 20px;">
-    </form>
-    </li>
-
+        <!-- 测试集比例 -->
+  <li>
+    <div class="input-container">
+      <label for="simThresh" class="floating-label">输入相似度阈值：</label>
+      <input 
+        type="number" 
+        id="simThresh" 
+        v-model="simThresh" 
+        min="1" max="11" step="1"
+        class="custom-input" 
+        placeholder="请输入相似度阈值!" 
+        required 
+        @focus="handleFocus" 
+        @blur="handleBlur"
+      >
+      <button class="increment-btn" @click="increment">+</button>
+      <button class="decrement-btn" @click="decrement">-</button>
+    </div>
+  </li>
     <li>
       <p v-if="message">{{ message }}</p>
     </li>
     
     <li>
-    <form @submit.prevent="handleFormSubmit">
       <button type="submit" :disabled="!file" class="submit-button">提&nbsp;&nbsp;交</button>
-    </form>
     </li>
+  </form>
+
+
+   
   </div>
   
   </div>
   <div class="img-tool">
-    <img alt="Vue logo" src="./tool-explain/tool4.png" width="900px" height="auto" class="image">
+    <img alt="Vue logo" src="./tool-explain/tool4.jpg" width="900px" height="auto" class="image">
   </div>
   
   </div>
@@ -84,6 +108,19 @@ export default {
     // 标记文件是否正在处理
     const isProcessing = ref(false);
 
+    // 增加阈值
+const increment = () => {
+  if (simThresh.value < 10) {  // 设最大值为10
+    simThresh.value = parseFloat((simThresh.value + 1).toFixed(1)); // 确保保留一位小数
+  }
+};
+
+// 减少阈值
+const decrement = () => {
+  if (simThresh.value > 1) { // 设最小值为1
+    simThresh.value = parseFloat((simThresh.value - 1).toFixed(1)); // 确保保留一位小数
+  }
+};
     // 打开文件选择器的方法
     const openFileInput = () => {
       if (fileInput.value) {
@@ -163,6 +200,10 @@ export default {
 
         // 显示文件处理成功的消息
         message.value = '文件处理成功.';
+        //清空信息
+        setTimeout(() => {
+        message.value = '';
+       }, 5000); // 设置多少时间后清空消息，5000ms
       } catch (error) {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
@@ -170,6 +211,13 @@ export default {
         // 清空进度条
         isUploading.value = false;
         uploadProgress.value = 0;
+
+        // 提示用户可以再次上传
+        setTimeout(() => {
+          if (!message.value) {
+            message.value = '您可以尝试再次上传';
+          }
+        }, 4000);
       } finally {
         isProcessing.value = false; // 关闭处理状态
         file.value = null; // 清除已选择的文件
@@ -198,7 +246,9 @@ export default {
       message,  // 用于存储并显示给用户的消息
       handleFormSubmit,
       simThresh,
-      isProcessing
+      isProcessing,
+      increment,
+      decrement
     };
   },
 };

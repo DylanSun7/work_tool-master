@@ -4,6 +4,7 @@
       <h2>数据切分</h2>
       <p>功能: 划分数据集</p>
       <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件, 选择划分的测试集比例, 点击提交即可</p>
+      <p>&nbsp;</p>
       </div>
   <div class="middle-window">
     <!-- 文件上传区域 -->
@@ -17,45 +18,68 @@
       accept=".zip,.rar,.7z"  required
     />
     <!-- 显示已选择的文件名 -->
-    <p v-if="file">已选择文件：{{ file.name }}</p>
+    <p v-if="file">已选择文件：{{ file.name }} &nbsp;<button @click="openFileInput">重新选择</button></p>
     <p v-else>将文件拖到这里，或者<button @click="openFileInput">点击上传</button></p>
+
 
     <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
     <div v-if="isUploading" class="upload-status">
+      <div class="upload-status-out">
           <div class="upload-status-in"><p>上传进度：</p></div>
           <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
           <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
         </div>
-
+            <div>
+              <!-- 显示已选择的文件名 -->
+                 <p v-if="file">{{ file.name }}</p>
+                   <button @click="openFileInput">重新选择</button>
+            </div>
+      </div>
         <!-- 处理中的加载图片，覆盖进度条 -->
         <div v-if="isProcessing" class="processing-status">
-          <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
-          <p class="processing-message">文件正在处理中。。。</p>
+         
+            <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
+           <p class="processing-message">文件正在处理中。。。</p>
+
+          
+
         </div>
     </div>
   <!-- 上传按钮，点击后打开文件选择对话框 -->
   <div class="upload-btn">
-    <li>
     <form @submit.prevent="handleFormSubmit">
-      <label for="splitRatio" style="font-size: 13px;">测试集比例：</label>
-      <input type="number" id="splitRatio" v-model="splitRatio" min="0.1" max="0.9" step="0.1" class="form-control" style="margin: 20px;">
-    </form>
-    </li>
-
+        <!-- 测试集比例 -->
+  <li>
+    <div class="input-container">
+      <label for="fps" class="floating-label">输入测试集比例：</label>
+      <input 
+        type="number" 
+        id="splitRatio" 
+        v-model="splitRatio" 
+        min="0.1" max="0.9" step="0.1"
+        class="custom-input" 
+        placeholder="请输入测试集比例：" 
+        required 
+        @focus="handleFocus" 
+        @blur="handleBlur"
+      >
+      <button class="increment-btn" @click="increment">+</button>
+      <button class="decrement-btn" @click="decrement">-</button>
+    </div>
+  </li>
     <li>
       <p v-if="message">{{ message }}</p>
     </li>
     
     <li>
-      <form @submit.prevent="handleFormSubmit">
       <button type="submit" :disabled="!file" class="submit-button">提&nbsp;&nbsp;交</button>
-    </form>
     </li>
+  </form>
   </div>
   
   </div>
   <div class="img-tool">
-    <img alt="Vue logo" src="./tool-explain/tool2.png" width="900px" height="auto" class="image">
+    <img alt="Vue logo" src="./tool-explain/tool2.jpg" width="900px" height="auto" class="image">
   </div>
 
 
@@ -90,7 +114,21 @@ export default {
         fileInput.value.click();
       }
     };
+    const isFocused = ref(false);
 
+// 增加阈值
+const increment = () => {
+  if (splitRatio.value < 0.9) {  // 设最大值为0.9，因为最小步长是0.1
+    splitRatio.value = parseFloat((splitRatio.value + 0.1).toFixed(1)); // 确保保留一位小数
+  }
+};
+
+// 减少阈值
+const decrement = () => {
+  if (splitRatio.value > 0.1) { // 设最小值为0.1
+    splitRatio.value = parseFloat((splitRatio.value - 0.1).toFixed(1)); // 确保保留一位小数
+  }
+};
     // 当文件输入框的值改变时触发，即选择了新文件
     const onFileChange = (event) => {
       // 获取选中的文件
@@ -162,6 +200,12 @@ export default {
 
         // 显示文件处理成功的消息
         message.value = '文件处理成功.';
+
+        //清空信息
+        setTimeout(() => {
+        message.value = '';
+       }, 5000); // 设置多少时间后清空消息，5000ms
+
       } catch (error) {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
@@ -169,6 +213,13 @@ export default {
         // 清空进度条
         isUploading.value = false;
         uploadProgress.value = 0;
+
+        // 提示用户可以再次上传
+        setTimeout(() => {
+          if (!message.value) {
+            message.value = '您可以尝试再次上传';
+          }
+        }, 4000);
       } finally {
         isProcessing.value = false; // 关闭处理状态
         file.value = null; // 清除已选择的文件
@@ -197,7 +248,10 @@ export default {
       message,  // 用于存储并显示给用户的消息
       handleFormSubmit,
       splitRatio,
-      isProcessing
+      isProcessing,
+      isFocused,
+      increment,
+      decrement,
     };
   },
 };

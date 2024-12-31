@@ -4,6 +4,7 @@
     <h2>视频抽帧</h2>
     <p>功能: 将视频转为图片</p>
     <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件（同一个压缩包中可以包含多条视频，进行视频抽帧）,选择好文件后选择帧率和图片格式, 点击提交即可</p>
+    <p>&nbsp;</p>
     </div>
   <div class="middle-window">
     <!-- 文件上传区域 -->
@@ -14,52 +15,79 @@
       @change="onFileChange"
       ref="fileInput"
       style="display: none"
-      accept=".zip,.rar,.7z"
+      accept=".zip,.rar,.7z"  required
     />
     <!-- 显示已选择的文件名 -->
-    <p v-if="file">已选择文件：{{ file.name }}</p>
+    <p v-if="file">已选择文件：{{ file.name }} &nbsp;<button @click="openFileInput">重新选择</button></p>
     <p v-else>将文件拖到这里，或者<button @click="openFileInput">点击上传</button></p>
 
-     <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
-     <div v-if="isUploading" class="upload-status">
+
+    <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
+    <div v-if="isUploading" class="upload-status">
+      <div class="upload-status-out">
           <div class="upload-status-in"><p>上传进度：</p></div>
           <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
           <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
         </div>
-
+            <div>
+              <!-- 显示已选择的文件名 -->
+                 <p v-if="file">{{ file.name }}</p>
+                   <button @click="openFileInput">重新选择</button>
+            </div>
+      </div>
         <!-- 处理中的加载图片，覆盖进度条 -->
-        <div v-if="isProcessing" class="processing-status">
+    <div v-if="isProcessing" class="processing-status">
           <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
           <p class="processing-message">文件正在处理中。。。</p>
+
         </div>
     </div>
   <!-- 上传按钮，点击后打开文件选择对话框 -->
   <div class="upload-btn">
-    <li>
-      <form @submit.prevent="handleFormSubmit">
-      <label for="fps" style="font-size: 13px;">输入抽帧帧率(即几秒一帧):</label>
-      <input type="number" id="fps" v-model="fps" class="form-control" style="margin-right: 20px;width: 50px;" required>
-      <label for="fileExt" style="font-size: 13px;">选择保存图片格式:</label>
-      <select name="fileExt" id="fileExt" v-model="fileExt" style="margin-right: 20px;" required>
+    <form @submit.prevent="handleFormSubmit">
+  <!-- 抽帧帧率 -->
+  <li>
+    <div class="input-container">
+      <label for="fps" class="floating-label">输入抽帧帧率(即几秒一帧):</label>
+      <input 
+        type="number" 
+        id="fps" 
+        v-model="fps" 
+        class="custom-input" 
+        placeholder="请输入帧率（例如：1）" 
+        required 
+        @focus="handleFocus" 
+        @blur="handleBlur"
+      >
+      <button class="increment-btn" @click="incrementFps">+</button>
+      <button class="decrement-btn" @click="decrementFps">-</button>
+    </div>
+  </li>
+
+  <!-- 选择保存图片格式 -->
+  <li>
+    <div class="select-container">
+      <select name="fileExt" id="fileExt" v-model="fileExt" class="custom-select" required>
+        <option value="" disabled selected>请选择图片保存的格式</option>
         <option value=".jpg">.jpg</option>
         <option value=".png">.png</option>
       </select>
-      
-    </form>
-    </li>
+    </div>
+  </li>
 
-    <li>
-      <p v-if="message">{{ message }}</p>
-    </li>
-    
-    <li>
-      <form @submit.prevent="handleFormSubmit"><button type="submit" :disabled="!file" class="submit-button">提&nbsp;&nbsp;交</button></form>
-    </li>
+  <li>
+    <p v-if="message">{{ message }}</p>
+  </li>
+  <!-- 提交按钮 -->
+  <li>
+    <button type="submit" :disabled="!file" class="submit-button">提&nbsp;&nbsp;交</button>
+  </li>
+</form>
   </div>
   
   </div>
   <div class="img-tool">
-    <img alt="Vue logo" src="./tool-explain/tool3.png" width="900px" height="auto" class="image">
+    <img alt="Vue logo" src="./tool-explain/tool3.jpg" width="900px" height="auto" class="image">
   </div>
 
 
@@ -85,10 +113,42 @@ export default {
     const uploadProgress = ref(0);
     // 消息提示
     const message = ref('');
-    // 抽帧帧率
-    const fps = ref(1);
-    // 图片格式
-    const fileExt = ref('.jpg');
+
+    // 初始化 fps 和 fileExt
+    const fps = ref(1); // 初始值为1
+    const fileExt = ref('');
+    const isFocused = ref(false);
+
+
+    // 增加帧率
+    const incrementFps = () => {
+      if (fps.value !== null && fps.value < Number.MAX_SAFE_INTEGER) {
+        fps.value = parseInt(fps.value) + 1;
+      }
+    };
+
+    const decrementFps = () => {
+      if (fps.value !== null && fps.value > 1) { // 假设最小值为1
+        fps.value = parseInt(fps.value) - 1;
+      }
+    };
+
+    const handleFocus = () => {
+      isFocused.value = true;
+    };
+
+    const handleBlur = () => {
+      isFocused.value = fps.value !== null && fps.value !== '';
+    };
+
+    const handleFormSubmit = () => {
+      // 处理表单提交的逻辑
+      console.log('FPS:', fps.value);
+      console.log('File Ext:', fileExt.value);
+      
+       // 调用 uploadFile 方法进行文件上传
+       uploadFile();
+    };
     // 标记文件是否正在处理
     const isProcessing = ref(false);
     // 打开文件选择器的方法
@@ -119,12 +179,6 @@ export default {
       }
     };
 
-    // 提交表单处理
-    const handleFormSubmit = async () => {
-      if (!file.value || isUploading.value) return; // 如果没有文件或正在上传则不执行
-
-      await uploadFile();
-    };
 
     // 开始上传文件
     const uploadFile = async () => {
@@ -133,12 +187,13 @@ export default {
       isProcessing.value = false; // 确保在上传开始前关闭处理状态
       message.value = ''; // 清除任何旧的消息
 
+
       try {
         // 创建表单数据对象并添加文件
         const formData = new FormData();
-        formData.append('file', file.value);
-        formData.append('fps', fps.value);
-        formData.append('fileExt', fileExt.value);
+       formData.append('file', file.value);
+       formData.append('fps', fps.value.toString()); // 确保 fps 是字符串
+       formData.append('fileExt', fileExt.value);
 
         // 发送POST请求上传文件
         const response = await axios.post("/api/cut_video", formData, {
@@ -171,13 +226,25 @@ export default {
 
         // 显示文件处理成功的消息
         message.value = '文件处理成功.';
+        
+        //清空信息
+        setTimeout(() => {
+        message.value = '';
+       }, 5000); // 设置多少时间后清空消息，5000ms
       } catch (error) {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
-        message.value = '文件处理失败';
+        message.value = '文件处理失败！';
         // 清空进度条
         isUploading.value = false;
         uploadProgress.value = 0;
+
+        // 提示用户可以再次上传
+        setTimeout(() => {
+          if (!message.value) {
+            message.value = '您可以尝试再次上传';
+          }
+        }, 4000);
       } finally {
         isProcessing.value = false; // 关闭处理状态
         file.value = null; // 清除已选择的文件
@@ -185,19 +252,16 @@ export default {
           fileInput.value.value = ''; // 重置文件输入框
         }
 
-        // 提示用户可以再次上传
-        setTimeout(() => {
-          if (!message.value) {
-            message.value = '您可以上传另一个文件。';
-          }
-        }, 1000); // 等待1秒后再显示提示，给用户一点时间阅读之前的成功或错误消息
+       
       }
     };
+
 
     // 返回需要在模板中使用的变量和方法
     return {
       file,
       fileInput,
+      handleFormSubmit,
       openFileInput,
       onFileChange,
       onDrop,
@@ -206,8 +270,13 @@ export default {
       message,  // 用于存储并显示给用户的消息
       fps,
       fileExt,
-      handleFormSubmit,
-      isProcessing
+      incrementFps,
+      decrementFps,
+      uploadFile,
+      isProcessing,
+      handleFocus,
+      handleBlur, 
+      isFocused,
     };
   },
 };

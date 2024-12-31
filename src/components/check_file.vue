@@ -4,6 +4,7 @@
     <h2>图片损坏检测</h2>
     <p>功能: 筛选损坏的图片文件, 返回正常图片文件</p>
     <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件, 选择文件后点击提交即可</p>
+    <p>&nbsp;</p>
     </div>
   <div class="middle-window">
     <!-- 文件上传区域 -->
@@ -17,20 +18,28 @@
       accept=".zip,.rar,.7z"
     />
     <!-- 显示已选择的文件名 -->
-    <p v-if="file">已选择文件：{{ file.name }}</p>
-    <p v-else>将文件拖到这里，或者<button @click="openFileInput">点击上传</button></p>
+      <p v-if="file">已选择文件：{{ file.name }} &nbsp;<button @click="openFileInput">重新选择</button></p>
+      <p v-else>将文件拖到这里，或者<button @click="openFileInput">点击上传</button></p>
 
     <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
     <div v-if="isUploading" class="upload-status">
+          <div class="upload-status-out">
           <div class="upload-status-in"><p>上传进度：</p></div>
           <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
           <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
+          </div>
+             <div>
+              <!-- 显示已选择的文件名 -->
+                 <p v-if="file">{{ file.name }}</p>
+                   <button @click="openFileInput">重新选择</button>
+             </div>
         </div>
 
         <!-- 处理中的加载图片，覆盖进度条 -->
         <div v-if="isProcessing" class="processing-status">
           <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
           <p class="processing-message">文件正在处理中。。。</p>
+
         </div>
     </div>
   <!-- 上传按钮，点击后打开文件选择对话框 -->
@@ -48,7 +57,7 @@
   
   </div>
   <div class="img-tool">
-    <img alt="Vue logo" src="./tool-explain/tool1.png" width="900px" height="auto" class="image">
+    <img alt="Vue logo" src="./tool-explain/tool1.jpg" width="900px" height="auto" class="image">
   </div>
 
 
@@ -150,13 +159,25 @@ export default {
 
         // 显示文件处理成功的消息
         message.value = '文件处理成功.';
+        
+        //清空信息
+        setTimeout(() => {
+        message.value = '';
+       }, 5000); // 设置多少时间后清空消息，5000ms
       } catch (error) {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
-        message.value = '文件处理失败';
+        message.value = '文件处理失败！';
         // 清空进度条
         isUploading.value = false;
         uploadProgress.value = 0;
+
+        // 提示用户可以再次上传
+        setTimeout(() => {
+          if (!message.value) {
+            message.value = '您可以尝试再次上传';
+          }
+        }, 4000);
       } finally {
         isProcessing.value = false; // 关闭处理状态
         file.value = null; // 清除已选择的文件
@@ -164,12 +185,7 @@ export default {
           fileInput.value.value = ''; // 重置文件输入框
         }
 
-        // 提示用户可以再次上传
-        setTimeout(() => {
-          if (!message.value) {
-            message.value = '您可以上传另一个文件。';
-          }
-        }, 1000); // 等待1秒后再显示提示，给用户一点时间阅读之前的成功或错误消息
+       
       }
     };
 
