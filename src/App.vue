@@ -113,7 +113,11 @@
                                 <!-- 功能1.1：图片损坏检测 -->
                                 <div v-if="showBox11" class="modal">
                                     <div class="modal-content">
-                                        <button @click="closeModal('modal11')" class="close-btn"><div>&times;</div></button>
+                                    <div style="width: 100%;">
+                                      <div class="close-btn-background">
+                                        <button @click="closeModal('modal11')" class="close-btn">&times;</button>
+                                      </div>
+                                    </div>
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
@@ -121,7 +125,9 @@
                                <!-- 功能1.2：数据切分 -->
                                 <div v-if="showBox12" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal12')" class="close-btn">&times;</button>
+                                        </div>
                                         <split_data :someProp="splitdatavalue" :split-ratio="splitRatio" @custom-event="handleSplitdataEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
@@ -129,7 +135,9 @@
                                 <!-- 功能1.3：视频抽帧 -->
                                 <div v-if="showBox13" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal13')" class="close-btn">&times;</button>
+                                    </div>
                                         <cut_video :someProp="cutvideovalue" @custom-event="handleCutvideoEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
@@ -137,7 +145,9 @@
                                 <!-- 功能1.4：图片去重 -->
                                 <div v-if="showBox14" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal14')" class="close-btn">&times;</button>
+                                        </div>
                                         <dedup_data :someProp="dedupdatavalue" @custom-event="handleDedupdataEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
@@ -149,14 +159,20 @@
                                 <!-- 弹窗2.1 -->
                                 <div v-if="showBox21" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal21')" class="close-btn">&times;</button>
+                                      </div>
+                                        
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
                                 <!-- 弹窗2.2 -->
                                 <div v-if="showBox22" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal22')" class="close-btn">&times;</button>
+                                      </div>
+                                        
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
@@ -164,7 +180,10 @@
                                 <!-- 弹窗2.3 -->
                                 <div v-if="showBox23" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal23')" class="close-btn">&times;</button>
+                                      </div>
+                                        
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
@@ -175,7 +194,10 @@
                                 <!-- 弹窗3.1 -->
                                 <div v-if="showBox31" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal31')" class="close-btn">&times;</button>
+                                      </div>
+                                        
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
@@ -183,7 +205,10 @@
                                 <!-- 弹窗3.2 -->
                                 <div v-if="showBox32" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal32')" class="close-btn">&times;</button>
+                                      </div>
+                                        
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
                                 </div>
@@ -191,7 +216,10 @@
                                 <!-- 弹窗3.3 -->
                                 <div v-if="showBox33" class="modal">
                                     <div class="modal-content">
+                                      <div class="close-btn-background">
                                         <button @click="closeModal('modal33')" class="close-btn">&times;</button>
+                                      </div>
+                                        
                                         <check_file :someProp="checkfilevalue" @custom-event="handleCheckfileEvent" />  <!--功能链接-->
                                     </div>
                                 </div>

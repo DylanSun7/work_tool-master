@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div class="function-module">
-    <h2>图片损坏检测</h2>
+    <h1>图片损坏检测</h1>
     <p>功能: 筛选损坏的图片文件, 返回正常图片文件</p>
-    <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件, 选择文件后点击提交即可</p>
+    <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(文件夹名不能有中文)</a>, 选择文件后点击提交即可<a>(文件大小不能超过5G)</a></p>
     <p>&nbsp;</p>
     </div>
   <div class="middle-window">
@@ -31,7 +31,6 @@
              <div>
               <!-- 显示已选择的文件名 -->
                  <p v-if="file">{{ file.name }}</p>
-                   <button @click="openFileInput">重新选择</button>
              </div>
         </div>
 
@@ -46,8 +45,7 @@
   <div class="upload-btn">
 
     <li>
-      
-      <p v-if="message">{{ message }}</p>
+      <p v-if="message">{{ message }}</p><p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
     </li>
     
     <li>
@@ -57,6 +55,7 @@
   
   </div>
   <div class="img-tool">
+    <div>&nbsp;使用示意图：</div>
     <img alt="Vue logo" src="./tool-explain/tool1.jpg" width="900px" height="auto" class="image">
   </div>
 
@@ -83,6 +82,8 @@ export default {
     const uploadProgress = ref(0);
     // 消息提示
     const message = ref('');
+    //errorMessage
+    const errorMessage = ref('');
     // 标记文件是否正在处理
     const isProcessing = ref(false);
     // 打开文件选择器的方法
@@ -121,6 +122,7 @@ export default {
       uploadProgress.value = 0; // 重置上传进度
       isProcessing.value = false; // 确保在上传开始前关闭处理状态
       message.value = ''; // 清除任何旧的消息
+      errorMessage.value = '';// 清除任何旧的错误消息
 
 
       try {
@@ -167,7 +169,7 @@ export default {
       } catch (error) {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
-        message.value = '文件处理失败！';
+        errorMessage.value = '文件处理失败！';
         // 清空进度条
         isUploading.value = false;
         uploadProgress.value = 0;
@@ -177,7 +179,7 @@ export default {
           if (!message.value) {
             message.value = '您可以尝试再次上传';
           }
-        }, 4000);
+        }, 2000);
       } finally {
         isProcessing.value = false; // 关闭处理状态
         file.value = null; // 清除已选择的文件
@@ -200,6 +202,7 @@ export default {
       isUploading,
       uploadProgress,
       message,
+      errorMessage,
       isProcessing
     };
   },
