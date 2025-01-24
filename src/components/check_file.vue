@@ -1,74 +1,106 @@
 <template>
   <div class="container">
     <div class="function-module">
-    <h1>图片损坏检测</h1>
-    <p>功能: 筛选损坏的图片文件, 返回正常图片文件</p>
-    <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(文件夹名不能有中文)</a>, 选择文件后点击提交即可<a>(文件大小不能超过5G)</a></p>
-    <p>&nbsp;</p>
-    </div>
-  <div class="middle-window">
-    <!-- 文件上传区域 -->
-  <div class="file-uploader" @drop.prevent="onDrop" @dragover.prevent>
-    <!-- 隐藏的文件输入框，用户点击上传按钮时触发 -->
-    <input
-      type="file"
-      @change="onFileChange"
-      ref="fileInput"
-      style="display: none"
-      accept=".zip,.rar,.7z"
-    />
-    <!-- 显示已选择的文件名 -->
-      <p v-if="file">已选择文件：{{ file.name }} &nbsp;<button @click="openFileInput">重新选择</button></p>
-      <p v-else>将文件拖到这里，或者<button @click="openFileInput">点击上传</button></p>
+      <div class="function-head">
+        <img src="../assets/style/tool-title/1-1.png">
+        <p>图片损坏检测</p>
+      </div>
 
-    <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
-    <div v-if="isUploading" class="upload-status">
-          <div class="upload-status-out">
-          <div class="upload-status-in"><p>上传进度：</p></div>
-          <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
-          <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
+      <div class="function-middle">
+
+        <!-- 左侧上传及处理区域 -->
+        <div class="function-middle-left">
+          <div class="function-middle-title">
+            <img src="../assets/style/upload.png">
+            <p>上传&处理文件</p>
           </div>
-             <div>
-              <!-- 显示已选择的文件名 -->
-                 <p v-if="file">{{ file.name }}</p>
-             </div>
+
+          <!-- 文件上传区域 -->
+          <div class="file-uploader" @drop.prevent="onDrop" @dragover.prevent>
+            <!-- 隐藏的文件输入框，用户点击上传按钮时触发 -->
+            <input
+              type="file"
+              @change="onFileChange"
+              ref="fileInput"
+              style="display: none"
+              accept=".zip,.rar,.7z"
+            />
+            <!-- 显示已选择的文件名 -->
+            <p v-if="file && showFileDetails">
+              已选择文件：{{ file.name }}
+              &nbsp;
+              <button @click="openFileInput">重新选择</button>
+            </p>
+            <p v-else-if="showFileDetails">
+              将文件拖到这里，或者
+              <button @click="openFileInput">点击上传</button>
+            </p>
+
+            <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
+            <div v-if="isUploading" class="upload-status">
+              <div class="upload-status-out">
+                <div class="upload-status-in"><p>上传进度：</p></div>
+                <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
+                <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
+              </div>
+              <div>
+                <!-- 显示已选择的文件名 -->
+                <p v-if="file">{{ file.name }}</p>
+              </div>
+            </div>
+
+            <!-- 处理中的加载图片，覆盖进度条 -->
+            <div v-if="isProcessing" class="processing-status">
+              <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
+              <p class="processing-message">文件正在处理中。。。</p>
+            </div>
+          </div>
+
         </div>
 
-        <!-- 处理中的加载图片，覆盖进度条 -->
-        <div v-if="isProcessing" class="processing-status">
-          <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
-          <p class="processing-message">文件正在处理中。。。</p>
+        <!-- 右侧操作提交区域 -->
+        <div class="function-middle-right">
+          <!-- 上传按钮，点击后打开文件选择对话框 -->
+          <div class="upload-btn">
+            <form ref="uploadForm" @submit="handleSubmit($event)">
+            <div class="upload-message">
+              <p v-if="message">{{ message }}</p>
+              <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+            </div>
 
+            
+            
+            <button type="submit" class="submit-button" :disabled="isUploading || isProcessing">提&nbsp;&nbsp;交</button>
+          </form>
+            
+          </div>
         </div>
+
+      </div>
     </div>
-  <!-- 上传按钮，点击后打开文件选择对话框 -->
-  <div class="upload-btn">
-
-    <li>
-      <p v-if="message">{{ message }}</p><p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
-    </li>
     
-    <li>
-      <form @submit.prevent="uploadFile"><button type="submit" class="submit-button">提&nbsp;&nbsp;交</button></form>
-    </li>
-  </div>
-  
-  </div>
-  <div class="img-tool">
-    <div>&nbsp;使用示意图：</div>
-    <img alt="Vue logo" src="./tool-explain/tool1.jpg" width="900px" height="auto" class="image">
-  </div>
+    <!-- 功能描述 -->
+    <div class="function-text">
+      <div class="text-head">
+        <img src="../assets/style/text.png">
+        <p>功能概述</p>
+      </div>
 
-
-  
+      <div class="text-content">
+        <p>功能: 筛选损坏的图片文件, 返回正常图片文件</p>
+        <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(上传的压缩包内包含同名的文件夹,文件夹名不能有中文)</a>, 选择文件后点击提交即可<a>(文件大小不能超过5G)</a></p>
+      </div>
+      <div class="img-tool">
+        <img alt="Vue logo" src="./tool-explain/tool1.jpg" width="900px" height="auto" class="image">
+      </div>
+    </div>
   </div>
 </template>
-
 
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import { saveAs } from 'file-saver'; //保存文件的库
+import { saveAs } from 'file-saver'; // 保存文件的库
 
 export default {
   setup() {
@@ -82,10 +114,13 @@ export default {
     const uploadProgress = ref(0);
     // 消息提示
     const message = ref('');
-    //errorMessage
+    // 错误消息
     const errorMessage = ref('');
     // 标记文件是否正在处理
     const isProcessing = ref(false);
+    // 控制文件详情的显示
+    const showFileDetails = ref(true);
+
     // 打开文件选择器的方法
     const openFileInput = () => {
       if (fileInput.value) {
@@ -96,24 +131,43 @@ export default {
 
     // 当文件输入框的值改变时触发，即选择了新文件
     const onFileChange = (event) => {
-      // 获取选中的文件
-      const selectedFile = event.target.files[0];
-      if (selectedFile) {
-        // 保存选中的文件到 file 变量中
-        file.value = selectedFile;
-      }
-    };
+  // 获取选中的文件
+  const selectedFile = event.target.files[0];
+  if (selectedFile) {
+    // 保存选中的文件到 file 变量中
+    file.value = selectedFile;
+    errorMessage.value = ''; // 清除错误消息
+  } else {
+    errorMessage.value = '请选择一个文件进行上传！';
+  }
+};
 
     // 处理文件拖放事件
     const onDrop = (event) => {
-      // 获取拖放的文件
-      const droppedFile = event.dataTransfer.files[0];
-      if (droppedFile) {
-        // 保存拖放的文件到 file 变量中
-        file.value = droppedFile;
-      }
-    };
+  // 获取拖放的文件
+  const droppedFile = event.dataTransfer.files[0];
+  if (droppedFile) {
+    // 保存拖放的文件到 file 变量中
+    file.value = droppedFile;
+    errorMessage.value = ''; // 清除错误消息
+  } else {
+    errorMessage.value = '请选择一个文件进行上传！';
+  }
+};
+    
+    const handleSubmit = (event) => {
+  event.preventDefault(); // 阻止表单的默认提交行为
 
+  // 检查文件是否为空
+  if (!file.value) {
+    errorMessage.value = '请选择一个文件进行上传！';
+    return;
+  }
+  
+
+  // 调用 uploadFile 方法进行文件上传
+  uploadFile();
+};
     // 开始上传文件
     const uploadFile = async () => {
       if (!file.value) return; // 如果没有文件则不执行
@@ -122,8 +176,8 @@ export default {
       uploadProgress.value = 0; // 重置上传进度
       isProcessing.value = false; // 确保在上传开始前关闭处理状态
       message.value = ''; // 清除任何旧的消息
-      errorMessage.value = '';// 清除任何旧的错误消息
-
+      errorMessage.value = ''; // 清除任何旧的错误消息
+      showFileDetails.value = false; // 隐藏文件详情
 
       try {
         // 创建表单数据对象并添加文件
@@ -161,11 +215,11 @@ export default {
 
         // 显示文件处理成功的消息
         message.value = '文件处理成功.';
-        
-        //清空信息
+
+        // 清空信息
         setTimeout(() => {
-        message.value = '';
-       }, 5000); // 设置多少时间后清空消息，5000ms
+          message.value = '';
+        }, 5000); // 设置多少时间后清空消息，5000ms
       } catch (error) {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
@@ -186,8 +240,7 @@ export default {
         if (fileInput.value) {
           fileInput.value.value = ''; // 重置文件输入框
         }
-
-       
+        showFileDetails.value = true; // 显示文件详情
       }
     };
 
@@ -203,7 +256,9 @@ export default {
       uploadProgress,
       message,
       errorMessage,
-      isProcessing
+      isProcessing,
+      showFileDetails,
+      handleSubmit
     };
   },
 };

@@ -1,94 +1,119 @@
 <template>
   <div class="container">
-      <div class="function-module">
-      <h1>数据切分</h1>
-      <p>功能: 划分数据集</p>
-      <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(文件夹名不能有中文)</a>, 选择划分的测试集比例<a>(0.1~0.9)</a>, 点击提交即可<a>(文件大小不能超过5G)</a></p>
-      <p>&nbsp;</p>
+    <div class="function-module">
+      <div class="function-head">
+        <img src="../assets/style/tool-title/1-2.png">
+        <p>数据切分</p>
       </div>
-  <div class="middle-window">
-    <!-- 文件上传区域 -->
-  <div class="file-uploader" @drop.prevent="onDrop" @dragover.prevent>
-    <!-- 隐藏的文件输入框，用户点击上传按钮时触发 -->
-    <input
-      type="file"
-      @change="onFileChange"
-      ref="fileInput"
-      style="display: none"
-      accept=".zip,.rar,.7z"  required
-    />
-    <!-- 显示已选择的文件名 -->
-    <p v-if="file">已选择文件：{{ file.name }} &nbsp;<button @click="openFileInput">重新选择</button></p>
-    <p v-else>将文件拖到这里，或者<button @click="openFileInput">点击上传</button></p>
 
+      <div class="function-middle">
+        <!-- 左侧上传及处理区域 -->
+        <div class="function-middle-left">
+          <div class="function-middle-title">
+            <img src="../assets/style/upload.png">
+            <p>上传&处理文件</p>
+          </div>
 
-    <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
-    <div v-if="isUploading" class="upload-status">
-      <div class="upload-status-out">
-          <div class="upload-status-in"><p>上传进度：</p></div>
-          <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
-          <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
-        </div>
-            <div>
-              <!-- 显示已选择的文件名 -->
-                 <p v-if="file">{{ file.name }}</p>
+          <!-- 文件上传区域 -->
+          <div class="file-uploader" @drop.prevent="onDrop" @dragover.prevent>
+            <!-- 隐藏的文件输入框，用户点击上传按钮时触发 -->
+            <input
+              type="file"
+              @change="onFileChange"
+              ref="fileInput"
+              style="display: none"
+              accept=".zip,.rar,.7z"
+              required
+            />
+            <!-- 显示已选择的文件名 -->
+            <p v-if="file && showFileDetails">
+              已选择文件：{{ file.name }}
+              &nbsp;
+              <button @click="openFileInput">重新选择</button>
+            </p>
+            <p v-else-if="showFileDetails">
+              将文件拖到这里，或者
+              <button @click="openFileInput">点击上传</button>
+            </p>
+
+            <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
+            <div v-if="isUploading" class="upload-status">
+              <div class="upload-status-out">
+                <div class="upload-status-in"><p>上传进度：</p></div>
+                <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
+                <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
+              </div>
+              <div>
+                <!-- 显示已选择的文件名 -->
+                <p v-if="file">{{ file.name }}</p>
+              </div>
             </div>
-      </div>
-        <!-- 处理中的加载图片，覆盖进度条 -->
-        <div v-if="isProcessing" class="processing-status">
-         
-            <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
-           <p class="processing-message">文件正在处理中。。。</p>
 
-          
-
+            <!-- 处理中的加载图片，覆盖进度条 -->
+            <div v-if="isProcessing" class="processing-status">
+              <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
+              <p class="processing-message">文件正在处理中。。。</p>
+            </div>
+          </div>
         </div>
-    </div>
-  <!-- 上传按钮，点击后打开文件选择对话框 -->
-  <div class="upload-btn">
-    <form ref="uploadForm" @submit="handleSubmit($event)">
-        <!-- 测试集比例 -->
-  <li>
-    <div class="input-container">
-      <label for="splitRatio" class="floating-label">输入测试集比例：</label>
-      <input 
-        type="number" 
-        id="splitRatio" 
-        v-model="splitRatio" 
-        min="0.1" max="0.9" step="0.1"
-        class="custom-input" 
-        placeholder="请输入0.1~1" 
-        required
-      >
-      <button class="increment-btn" @click="increment" type="button">+</button>
-      <button class="decrement-btn" @click="decrement" type="button">-</button>
-    </div>
-  </li>
-    <li>
-      <p v-if="message">{{ message }}</p><p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
-    </li>
-    
-    <li>
-      <button type="submit" :disabled="!file" class="submit-button">提&nbsp;&nbsp;交</button>
-    </li>
-  </form>
-  </div>
-  
-  </div>
-  <div class="img-tool">
-    <div>&nbsp;使用示意图：</div>
-    <img alt="Vue logo" src="./tool-explain/tool2.jpg" width="900px" height="auto" class="image">
-  </div>
 
+        <!-- 右侧操作提交区域 -->
+        <div class="function-middle-right">
+          <!-- 上传按钮，点击后打开文件选择对话框 -->
+          <div class="upload-btn">
+            <form ref="uploadForm" @submit="handleSubmit($event)">
+              <!-- 测试集比例 -->
+              <div class="input-container">
+                <label for="splitRatio" class="floating-label">测试集比例：</label>
+                <input 
+                  type="number" 
+                  id="splitRatio" 
+                  v-model="splitRatio" 
+                  min="0.1" max="0.9" step="0.1"
+                  class="custom-input" 
+                  placeholder="请输入0.1~1" 
+                  required
+                >
+                <button class="increment-btn" @click="increment" type="button">+</button>
+                <button class="decrement-btn" @click="decrement" type="button">-</button>
+              </div>
 
+              <p v-if="message">{{ message }}</p>
+              <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+
+              <!-- 提交按钮 -->
+              <button type="submit" class="submit-button" :disabled="isUploading || isProcessing">提&nbsp;&nbsp;交</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 功能描述 -->
+    <div class="function-text">
+      <div class="text-head">
+        <img src="../assets/style/text.png">
+        <p>功能概述</p>
+      </div>
+
+      <div class="text-content">
+        <p>功能: 划分数据集</p>
+        <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(上传的压缩包内包含同名的文件夹,文件夹名不能有中文)</a>, 选择划分的测试集比例<a>(0.1~0.9)</a>, 点击提交即可<a>(文件大小不能超过5G)</a></p>
+      </div>
+      <div class="img-tool">
+        <img alt="Vue logo" src="./tool-explain/tool2.jpg" width="900px" height="auto" class="image">
+      </div>
+    </div>
   </div>
 </template>
+
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import { saveAs } from 'file-saver'; //保存文件的库
+import { saveAs } from 'file-saver'; // 保存文件的库
 
 export default {
+  name: "split_data",
   setup() {
     // 存储选中的单个文件
     const file = ref(null);
@@ -100,7 +125,7 @@ export default {
     const uploadProgress = ref(0);
     // 消息提示
     const message = ref('');
-    //errorMessage
+    // 错误消息提示
     const errorMessage = ref('');
     // 默认切分比例为0.2
     const splitRatio = ref(0.2);
@@ -108,53 +133,62 @@ export default {
     const isProcessing = ref(false);
 
     const uploadForm = ref(null); // 引用整个表单元素
-    // 打开文件选择器的方法
-    const openFileInput = () => {
-      if (fileInput.value) {
-        // 触发文件输入框的点击事件，打开文件选择对话框
-        fileInput.value.click();
-      }
-    };
+    // 控制文件详情的显示
+    const showFileDetails = ref(true);
     const isFocused = ref(false);
 
-// 增加数值
-const increment = () => {
-  let numericValue = Number(splitRatio.value);
-  if (isNaN(numericValue)) {
-    numericValue = 0.1; // 设置一个合理的默认值
-  }
-  if (numericValue < 0.9) { // 设最大值为0.9
-    splitRatio.value = parseFloat((numericValue + 0.1).toFixed(1)); // 确保保留一位小数
-  }
-};
-
-// 减少数值
-const decrement = () => {
-  let numericValue = Number(splitRatio.value);
-  if (isNaN(numericValue)) {
-    numericValue = 0.9; // 设置一个合理的默认值
-  }
-  if (numericValue > 0.1) { // 设最小值为0.1
-    splitRatio.value = parseFloat((numericValue - 0.1).toFixed(1)); // 确保保留一位小数
-  }
-};
-    // 当文件输入框的值改变时触发，即选择了新文件
-    const onFileChange = (event) => {
-      // 获取选中的文件
-      const selectedFile = event.target.files[0];
-      if (selectedFile) {
-        // 保存选中的文件到 file 变量中
-        file.value = selectedFile;
+    // 增加数值
+    const increment = () => {
+      let numericValue = Number(splitRatio.value);
+      if (isNaN(numericValue)) {
+        numericValue = 0.1; // 设置一个合理的默认值
+      }
+      if (numericValue < 0.9) { // 设最大值为0.9
+        splitRatio.value = parseFloat((numericValue + 0.1).toFixed(1)); // 确保保留一位小数
       }
     };
+
+    // 减少数值
+    const decrement = () => {
+      let numericValue = Number(splitRatio.value);
+      if (isNaN(numericValue)) {
+        numericValue = 0.9; // 设置一个合理的默认值
+      }
+      if (numericValue > 0.1) { // 设最小值为0.1
+        splitRatio.value = parseFloat((numericValue - 0.1).toFixed(1)); // 确保保留一位小数
+      }
+    };
+
+    // 当文件输入框的值改变时触发，即选择了新文件
+    const onFileChange = (event) => {
+  // 获取选中的文件
+  const selectedFile = event.target.files[0];
+  if (selectedFile) {
+    // 保存选中的文件到 file 变量中
+    file.value = selectedFile;
+    errorMessage.value = ''; // 清除错误消息
+  } else {
+    errorMessage.value = '请选择一个文件进行上传！';
+  }
+};
 
     // 处理文件拖放事件
     const onDrop = (event) => {
-      // 获取拖放的文件
-      const droppedFile = event.dataTransfer.files[0];
-      if (droppedFile) {
-        // 保存拖放的文件到 file 变量中
-        file.value = droppedFile;
+  // 获取拖放的文件
+  const droppedFile = event.dataTransfer.files[0];
+  if (droppedFile) {
+    // 保存拖放的文件到 file 变量中
+    file.value = droppedFile;
+    errorMessage.value = ''; // 清除错误消息
+  } else {
+    errorMessage.value = '请选择一个文件进行上传！';
+  }
+};
+
+    // 打开文件选择对话框
+    const openFileInput = () => {
+      if (fileInput.value) {
+        fileInput.value.click();
       }
     };
 
@@ -165,9 +199,17 @@ const decrement = () => {
     const handleBlur = () => {
       isFocused.value = splitRatio.value !== null && splitRatio.value !== '';
     };
+
     // 提交表单处理
+    
     const handleSubmit = (event) => {
   event.preventDefault(); // 阻止表单的默认提交行为
+
+  // 检查文件是否存在
+  if (!file.value) {
+    errorMessage.value = '请选择一个文件进行上传！';
+    return;
+  }
 
   // 检查表单是否有效
   const form = uploadForm.value;
@@ -189,21 +231,22 @@ const decrement = () => {
       uploadProgress.value = 0; // 重置上传进度
       isProcessing.value = false; // 确保在上传开始前关闭处理状态
       message.value = ''; // 清除任何旧的消息
-      errorMessage.value = '';// 清除任何旧的错误消息
+      errorMessage.value = ''; // 清除任何旧的错误消息
+      showFileDetails.value = false; // 隐藏文件详情
 
       try {
         // 创建表单数据对象并添加文件
         const formData = new FormData();
         formData.append('file', file.value);
-        formData.append('splitRatio', splitRatio.value)
+        formData.append('splitRatio', splitRatio.value);
 
         // 发送POST请求上传文件
         const response = await axios.post("/api/split_data", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // 设置请求头
           },
-         // 监听上传进度
-         onUploadProgress: (progressEvent) => {
+          // 监听上传进度
+          onUploadProgress: (progressEvent) => {
             if (progressEvent.lengthComputable) {
               // 计算并更新上传进度
               const percentComplete =
@@ -229,11 +272,10 @@ const decrement = () => {
         // 显示文件处理成功的消息
         message.value = '文件处理成功.';
 
-        //清空信息
+        // 清空信息
         setTimeout(() => {
-        message.value = '';
-       }, 5000); // 设置多少时间后清空消息，5000ms
-
+          message.value = '';
+        }, 5000); // 设置多少时间后清空消息，5000ms
       } catch (error) {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
@@ -245,7 +287,7 @@ const decrement = () => {
         // 提示用户可以再次上传
         setTimeout(() => {
           if (!errorMessage.value) {
-            errorMessage.value = 'error';
+            errorMessage.value = '您可以尝试再次上传';
           }
         }, 4000);
       } finally {
@@ -254,7 +296,7 @@ const decrement = () => {
         if (fileInput.value) {
           fileInput.value.value = ''; // 重置文件输入框
         }
-
+        showFileDetails.value = true; // 显示文件详情
         // 提示用户可以再次上传
         setTimeout(() => {
           if (!message.value) {
@@ -283,7 +325,8 @@ const decrement = () => {
       increment,
       decrement,
       handleFocus,
-      handleBlur
+      handleBlur,
+      showFileDetails
     };
   },
 };

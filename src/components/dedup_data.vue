@@ -1,93 +1,116 @@
 <template>
   <div class="container">
-      <div class="function-module">
-      <h1>图片去重</h1>
-      <p>功能: 剔除相似度高的图片</p>
-      <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(文件夹名不能有中文)</a>,选择相似度阈值<a>(1~9)</a>,点击提交即可<a>(文件大小不能超过5G)</a></p>
-      <p>&nbsp;</p>
+    <div class="function-module">
+      <div class="function-head">
+        <img src="../assets/style/tool-title/1-4.png">
+        <p>图片去重</p>
       </div>
-  <div class="middle-window">
-    <!-- 文件上传区域 -->
-  <div class="file-uploader" @drop.prevent="onDrop" @dragover.prevent>
-    <!-- 隐藏的文件输入框，用户点击上传按钮时触发 -->
-    <input
-      type="file"
-      @change="onFileChange"
-      ref="fileInput"
-      style="display: none"
-      accept=".zip,.rar,.7z"
-      class="file-input" required
-    />
-    <!-- 显示已选择的文件名 -->
-    <p v-if="file">已选择文件：{{ file.name }} &nbsp;<button @click="openFileInput">重新选择</button></p>
-    <p v-else>将文件拖到这里，或者<button @click="openFileInput">点击上传</button></p>
 
-    <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
-    <div v-if="isUploading" class="upload-status">
-      <div class="upload-status-out">
-          <div class="upload-status-in"><p>上传进度：</p></div>
-          <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
-          <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
-        </div>
-            <div>
-              <!-- 显示已选择的文件名 -->
-                 <p v-if="file">{{ file.name }}</p>
+      <div class="function-middle">
+        <!-- 左侧上传及处理区域 -->
+        <div class="function-middle-left">
+          <div class="function-middle-title">
+            <img src="../assets/style/upload.png">
+            <p>上传&处理文件</p>
+          </div>
+
+          <!-- 文件上传区域 -->
+          <div class="file-uploader" @drop.prevent="onDrop" @dragover.prevent>
+            <!-- 隐藏的文件输入框，用户点击上传按钮时触发 -->
+            <input
+              type="file"
+              @change="onFileChange"
+              ref="fileInput"
+              style="display: none"
+              accept=".zip,.rar,.7z"
+              required
+            />
+            <!-- 显示已选择的文件名 -->
+            <p v-if="file && showFileDetails">
+              已选择文件：{{ file.name }}
+              &nbsp;
+              <button @click="openFileInput">重新选择</button>
+            </p>
+            <p v-else-if="showFileDetails">
+              将文件拖到这里，或者
+              <button @click="openFileInput">点击上传</button>
+            </p>
+
+            <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
+            <div v-if="isUploading" class="upload-status">
+              <div class="upload-status-out">
+                <div class="upload-status-in"><p>上传进度：</p></div>
+                <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
+                <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
+              </div>
+              <div>
+                <!-- 显示已选择的文件名 -->
+                <p v-if="file">{{ file.name }}</p>
+              </div>
             </div>
+
+            <!-- 处理中的加载图片，覆盖进度条 -->
+            <div v-if="isProcessing" class="processing-status">
+              <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
+              <p class="processing-message">文件正在处理中。。。</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧操作提交区域 -->
+        <div class="function-middle-right">
+          <!-- 上传按钮，点击后打开文件选择对话框 -->
+          <div class="upload-btn">
+            <form ref="uploadForm" @submit="handleSubmit($event)">
+              <!-- 测试集比例 -->
+              <div class="input-container">
+                <label for="simThresh" class="floating-label">相似度阈值：</label>
+                <input 
+                  type="number" 
+                  id="simThresh" 
+                  v-model="simThresh" 
+                  min="1" max="10" step="1"
+                  class="custom-input" 
+                  placeholder="请输入1~10" 
+                  required
+                >
+                <button class="increment-btn" @click="increment" type="button">+</button>
+                <button class="decrement-btn" @click="decrement" type="button">-</button>
+              </div>
+
+              <p v-if="message">{{ message }}</p>
+              <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+
+              <!-- 提交按钮 -->
+              <button type="submit" class="submit-button" :disabled="isUploading || isProcessing">提&nbsp;&nbsp;交</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 功能描述 -->
+    <div class="function-text">
+      <div class="text-head">
+        <img src="../assets/style/text.png">
+        <p>功能概述</p>
       </div>
 
-        <!-- 处理中的加载图片，覆盖进度条 -->
-        <div v-if="isProcessing" class="processing-status">
-          <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
-          <p class="processing-message">文件正在处理中。。。</p>
-        </div>
+      <div class="text-content">
+        <p>功能: 剔除相似度高的图片</p>
+        <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(上传的压缩包内包含同名的文件夹,文件夹名不能有中文)</a>,选择相似度阈值<a>(1~10)</a>,点击提交即可<a>(文件大小不能超过5G)</a></p>
+      </div>
+      <div class="img-tool">
+        <img alt="Vue logo" src="./tool-explain/tool4.jpg" width="900px" height="auto" class="image">
+      </div>
     </div>
-  <!-- 上传按钮，点击后打开文件选择对话框 -->
-  <div class="upload-btn">
-    <form ref="uploadForm" @submit="handleSubmit($event)">
-
-        <!-- 测试集比例 -->
-  <li>
-    <div class="input-container">
-      <label for="simThresh" class="floating-label">输入相似度阈值：</label>
-      <input 
-        type="number" 
-        id="simThresh" 
-        v-model="simThresh" 
-        min="1" max="11" step="1"
-        class="custom-input" 
-        placeholder="请输入1~10" 
-        required
-      >
-      <button class="increment-btn" @click="increment" type="button">+</button>
-      <button class="decrement-btn" @click="decrement" type="button">-</button>
-    </div>
-  </li>
-    <li>
-      <p v-if="message">{{ message }}</p><p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
-    </li>
-    
-    <li>
-      <button type="submit" :disabled="!file" class="submit-button">提&nbsp;&nbsp;交</button>
-    </li>
-  </form>
-
-
-   
-  </div>
-  
-  </div>
-  <div class="img-tool">
-    <div>&nbsp;使用示意图：</div>
-    <img alt="Vue logo" src="./tool-explain/tool4.jpg" width="900px" height="auto" class="image">
-  </div>
-  
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import { saveAs } from 'file-saver'; //保存文件的库
+import { saveAs } from 'file-saver'; // 保存文件的库
 
 export default {
   setup() {
@@ -101,7 +124,7 @@ export default {
     const uploadProgress = ref(0);
     // 消息提示
     const message = ref('');
-    //errorMessage
+    // 错误消息提示
     const errorMessage = ref('');
     // 默认阈值
     const simThresh = ref(1);
@@ -109,28 +132,32 @@ export default {
     const isProcessing = ref(false);
 
     const uploadForm = ref(null); // 引用整个表单元素
+    // 控制文件详情的显示
+    const showFileDetails = ref(true);
+    const isFocused = ref(false);
 
-// 增加数值
-const increment = () => {
-  let numericValue = Number(simThresh.value);
-  if (isNaN(numericValue)) {
-    numericValue = 1; // 设置一个合理的默认值
-  }
-  if (numericValue < 10) { // 设最大值为0.9
-    simThresh.value = parseFloat((numericValue + 1).toFixed(1)); // 确保保留一位小数
-  }
-};
+    // 增加数值
+    const increment = () => {
+      let numericValue = Number(simThresh.value);
+      if (isNaN(numericValue)) {
+        numericValue = 1; // 设置一个合理的默认值
+      }
+      if (numericValue < 10) { // 设最大值为10
+        simThresh.value = parseFloat((numericValue + 1).toFixed(1)); // 确保保留一位小数
+      }
+    };
 
-// 减少数值
-const decrement = () => {
-  let numericValue = Number(simThresh.value);
-  if (isNaN(numericValue)) {
-    numericValue = 10; // 设置一个合理的默认值
-  }
-  if (numericValue > 1) { // 设最小值为0.1
-    simThresh.value = parseFloat((numericValue - 1).toFixed(1)); // 确保保留一位小数
-  }
-};
+    // 减少数值
+    const decrement = () => {
+      let numericValue = Number(simThresh.value);
+      if (isNaN(numericValue)) {
+        numericValue = 10; // 设置一个合理的默认值
+      }
+      if (numericValue > 1) { // 设最小值为1
+        simThresh.value = parseFloat((numericValue - 1).toFixed(1)); // 确保保留一位小数
+      }
+    };
+
     const handleFocus = () => {
       isFocused.value = true;
     };
@@ -138,6 +165,7 @@ const decrement = () => {
     const handleBlur = () => {
       isFocused.value = simThresh.value !== null && simThresh.value !== '';
     };
+
     // 打开文件选择器的方法
     const openFileInput = () => {
       if (fileInput.value) {
@@ -145,7 +173,6 @@ const decrement = () => {
         fileInput.value.click();
       }
     };
-    const isFocused = ref(false);
 
     // 当文件输入框的值改变时触发，即选择了新文件
     const onFileChange = (event) => {
@@ -154,6 +181,9 @@ const decrement = () => {
       if (selectedFile) {
         // 保存选中的文件到 file 变量中
         file.value = selectedFile;
+        errorMessage.value = ''; // 清除错误消息
+      } else {
+        errorMessage.value = '请选择一个文件进行上传！';
       }
     };
 
@@ -164,26 +194,35 @@ const decrement = () => {
       if (droppedFile) {
         // 保存拖放的文件到 file 变量中
         file.value = droppedFile;
+        errorMessage.value = ''; // 清除错误消息
+      } else {
+        errorMessage.value = '请选择一个文件进行上传！';
       }
     };
 
     // 提交表单处理
     const handleSubmit = (event) => {
-  event.preventDefault(); // 阻止表单的默认提交行为
+      event.preventDefault(); // 阻止表单的默认提交行为
 
-  // 检查表单是否有效
-  const form = uploadForm.value;
-  if (form && !form.checkValidity()) {
-    form.reportValidity();
-    return;
-  }
+      // 检查文件是否存在
+      if (!file.value) {
+        errorMessage.value = '请选择一个文件进行上传！';
+        return;
+      }
 
-  // 表单有效，可以继续执行上传逻辑
-  console.log('simThresh:', simThresh.value);
+      // 检查表单是否有效
+      const form = uploadForm.value;
+      if (form && !form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
 
-  // 调用 uploadFile 方法进行文件上传
-  uploadFile();
-};
+      // 表单有效，可以继续执行上传逻辑
+      console.log('simThresh:', simThresh.value);
+
+      // 调用 uploadFile 方法进行文件上传
+      uploadFile();
+    };
 
     // 开始上传文件
     const uploadFile = async () => {
@@ -191,7 +230,8 @@ const decrement = () => {
       uploadProgress.value = 0; // 重置上传进度
       isProcessing.value = false; // 确保在上传开始前关闭处理状态
       message.value = ''; // 清除任何旧的消息
-      errorMessage.value = '';// 清除任何旧的错误消息
+      errorMessage.value = ''; // 清除任何旧的错误消息
+      showFileDetails.value = false; // 隐藏文件详情
 
       try {
         // 创建表单数据对象并添加文件
@@ -230,10 +270,11 @@ const decrement = () => {
 
         // 显示文件处理成功的消息
         message.value = '文件处理成功.';
-        //清空信息
+
+        // 清空信息
         setTimeout(() => {
-        message.value = '';
-       }, 5000); // 设置多少时间后清空消息，5000ms
+          message.value = '';
+        }, 5000); // 设置多少时间后清空消息，5000ms
       } catch (error) {
         // 捕获并处理上传错误
         console.error("文件处理失败:", error);
@@ -254,7 +295,7 @@ const decrement = () => {
         if (fileInput.value) {
           fileInput.value.value = ''; // 重置文件输入框
         }
-
+        showFileDetails.value = true; // 显示文件详情
         // 提示用户可以再次上传
         setTimeout(() => {
           if (!message.value) {
@@ -283,7 +324,8 @@ const decrement = () => {
       errorMessage,
       handleFocus,
       handleBlur,
-      isFocused
+      isFocused,
+      showFileDetails
     };
   },
 };

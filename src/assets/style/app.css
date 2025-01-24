@@ -1,559 +1,692 @@
-
-body {
+/* 基本样式 */
+body, html {
   margin: 0;
-  font-family: Arial, sans-serif;
-  /*background-color: #f9f9f9;*/
-  color: #333;
-  background: url("waves.jpg")  /*主页面背景图*/
-                no-repeat center center fixed;
-                /*兼容浏览器版本*/
-                -webkit-background-size: cover;
-                -o-background-size: cover;                
-                background-size: cover;
-} 
-.image-with-title {
-  display: flex;
-  justify-content: center;
-  align-items: center; /* 垂直居中对齐 */
-}
-
-.image {
-  max-width: 100%; /* 确保图片不会超出容器 */
-  height: auto;    /* 保持宽高比 */
-   /* 标题与图片之间的间距 */
-}
-
-.title {
-  font-size: 2em; /* 根据需要调整字体大小 */
-  text-align: center;
-  font-style: inherit;
-  font-weight: bold;
-  color: #fefdff;
-}
-#app {
+  padding: 0;
+  height: 100%;
   
-   max-width: 100%;
-  margin: 0%;
-
- 
-  /*
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  */
-}
-
-h1 {
-font-size: 2em;
-color: #00b7ff;
-margin-bottom: 20px;
-}
-
-/* Form */
-.upload-form {
-display: flex;
-flex-direction: column;
-align-items: center;
-}
-
-/* File Input */
-.file-input {
-width: 200px;
-padding: 10px;
-margin-bottom: 10px;
-border-radius: 4px;
-transition: border-color 0.3s ease;
-}
-
-.file-input:focus {
-outline: none;
-border-color: #007bff;
-}
-
-/**/
-/*外按钮大小颜色*/
-.dropbtn {
-background-color: #4569FF;
-color: white;
-padding: 18px;
-font-size: 18px;
-border-radius: 18px;
-border: none;
-cursor: pointer;
-}   
-
-/*鼠标靠近后颜色*/
-.dropbtn:hover{
-  background-color: #007bffcf;
-}
-
-/*按钮等距*/
-.out-btn-div{
-  display: flex;
-  text-align: center;
-}
-/*按钮等距*/
-.btn-div{
-  flex : 1;
-}
-body,div{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-/*盒子div垂直居中*/
-.fa{
-  width:100vw;
-  height: 100vh;
-  display:flex;
-  justify-content:center;
   
-  }
-/*内层盒子垂直水平居中*/
-.outside{
-  background-color: #fffef3f5;   /*主体背景颜色*/
-  align-items:center;
-  display:flex;
-  justify-content:center;
-  width: 80%;
 }
 
-
-.son{
- width: 50%;
- height: 50%;
- padding-bottom: 50%; 
+.main-background {
+  position: fixed;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -3;
+  background-color: rgb(243, 243, 243);
+  overflow: hidden; 
+}
+/* 视频背景 */
+.head-background{
+  position: relative;
+  width: 100%;
+  height: 28%;
 }
 
-/*内按钮样式*/
-.btn {
-  background-color: #00b1fc;
-  border-radius: 4px;
-  border: 1px solid blue;
-  padding:  16px;
-  border: 1px;
-  color: white;
-  font-size: 0.9em;
-  cursor: pointer;
+/* 视频 */
+.video-background {
+  position: fixed; /* 固定位置 */
+  top: 0; /* 距离顶部0 */
+  left: 0; /* 距离左侧0 */
+  width: 100%; /* 宽度100% */
+  height: 28%; 
+  object-fit: cover; /* 确保视频覆盖整个区域，可能会裁剪 */
+  z-index: -2; /* 确保视频在背景层 */
 }
-.btn:hover{
-  background-color: #006fb4;
-}
-
-
-
-
-li{
-  list-style-type: none;
-  height: 70px;
-}
-
-
-/*弹窗样式*/
-/*外方框*/
-.modal {
+/* 黑色覆盖背景 */
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* 确保弹窗位于页面其他内容之上 */
+  height: 28%;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+  z-index: -1; /* 在视频之上，内容之下 */
 }
-
-/*内方框*/
-.modal-content {
-  position: relative;
-  background-color: #fffff6;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 90%; /* 最大宽度为视窗的90% */
-  max-height: 90%; /* 最大高度为视窗的90% */
-  overflow: auto; /* 如果内容超出容器，则添加滚动条 */
-  width: 60%; /* 默认宽度 */
-  height: auto; /* 自动调整高度 */
-  box-sizing: border-box; 
-}
-
-/*内窗口*/
-.container {
-  margin-left: 2.5%;
-  margin-right: 2.5%;
-  position: relative; /* 确保子元素的绝对定位相对于此容器 */
-  }
-
-  /*关闭按钮后背景*/
-.close-btn-background{
-  background-color:rgba(147,224,255);
-  height: 45px;
-  max-height: 100%;
-  box-shadow: 0 10px 10px -8px rgba(0,0,0,0.2); /* 底部外阴影 */
-}
-
-/*关闭按钮样式*/
-.close-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: none; 
-  border: none;
-  font-size: 35px;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: #ff9797;
-  border-top-right-radius: 10px;
-  width: 2.5%;
-  height: 45px;
-  text-align: center;
-  justify-content: center;
-  z-index: 4;
-  box-shadow: 0 10px 10px -8px rgba(0,0,0,0.2); /* 底部外阴影 */
-}
-.close-btn:hover{
-  background-color: rgb(255, 66, 93);
-}
-  /*@media (min-width: 768px) {
-    .container {
-      max-width: 600px;  在平板及更大屏幕上设定固定最大宽度 
-      max-height: 80%;  调整较大屏幕上的最大高度 
-    }
-  }*/
-
-  /*功能描述div*/
-  .function-module{
-    max-width: 100%;
-    background-color: #fffae4;  
-    box-shadow: inset 0 10px 10px -10px rgba(0,0,0,0.5); /* 内阴影 */
-  }
-  /*功能描述*/
-  .function-module p{
-    color:#2981e6;
-    font-size:19px;
-    font-weight:bold;
-    margin:0.1%;
-    margin-left: 10px;
-  }
-  .function-module h1{
-    margin: 0;
-    font-size: 2em;
-    text-align: left;
-    color: rgb(255, 66, 93);
-    margin-bottom: 20px;
-    margin-left: 10px;
-  }
-  .function-module a{
-    color: rgb(255, 66, 93);
-  }
-  /*窗口中间按钮进度栏*/
-  .middle-window{
-    align-items: center;
-    text-align: center;
-    display: flex;
-    background-color: #F1FAFA;
-  }
-
-  /*拖拽上传框样式*/
-.file-uploader {
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  padding: 130px;
-  width:700px;
-  margin: 0 auto;
-  position: relative; /* 确保子元素的绝对定位相对于此容器 */
-}
-.file-uploader:hover {
-  background-color: #f9f9f9;
-}
-.file-uploader button {
-  position: relative;
-  cursor: pointer;
-}
-progress {
-  width: 100%;
-  margin-top: 10px;
-}
-
-/*进度条文字样式*/
-.upload-status {
-  position: absolute;
+/* 标题 */
+.head-container{
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(253, 255, 231); /* 半透明背景，可选 */
-  z-index: 2; /* 确位于之上 */
+  height: 28%;
+  margin-bottom: auto;
 }
-
-.upload-status-out {
-  justify-content: center;
-  align-items: center;
-  display:flex;
-  margin-top: 20%;
-  flex : 1;
-}
-.upload-status-in  {
-  flex : 1;
-}
-
-/*提交输入框*/
-.upload-btn {
-  justify-content: center;
-  align-items: center;
-  flex : 1;
-}
-
-/*文字样式*/
-.upload-btn label,option,select{
-   color:#2981e6;
-    font-size:18px;
-    font-weight:bold;
-    margin:10px;
-}
-.upload-btn p{
-    color:#2981e6;
-    font-size:18px;
-    font-weight:bold;
-    margin:10px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-}
-/*提交按钮*/
-/* Submit Button */
-.submit-button {
-  background-color: #00b1fc;
-  border-radius: 8px;
-  border: 1px solid blue;
-  padding:  1%;
-  border: 1px;
+.content {
   color: white;
-  font-size: 1.5em;
+  text-align: center;
+ 
+}
+
+/* 车车 */
+#lottie{
+  height: 15vh;
+  width: auto;
+  margin-top: 0.3%;
+}
+
+/* logo */
+.image-logo{
+  top: 0.3%;
+  left: 1%;
+  position: absolute;
+  font-weight:bold;
+}
+.image-logo img{
+  height: auto;    /* 保持宽高比 */
+  width: 12%;
+}
+
+
+
+/* 工具菜单 */
+.out-tool-menu {
+ padding-top: 15%;
+}
+
+.tool-menu {
+  border-radius: 5px;
+  width: 65%; 
+  display:block;
+  box-sizing: border-box; /* 确保padding和border包含在元素的width和height内 */
+  margin: 0 auto; /* 上下边距为0，左右自动计算实现水平居中 */
+  margin-top: 0.5%; /* 可以根据需要调整 */
+  background-color: rgb(250, 253, 255);
+  height: 25vh;
+  max-height: 25vh;
+}
+
+.tool-middle {
+  margin-left: 2%;
+  margin-right: 2%;
+
+}
+.tool-title {
+  color: #707070;
+  border-bottom: 2px solid #70707024;
+  padding-top: 1%;
+}
+.tool-title img{
+  height: auto;
+  width: 1.3em;
+}
+.tool-title strong{
+  font-size: 1em;
+} 
+
+/* 菜单按钮 */
+.tool-list{
+  display: flex;
+  text-align: center;
+}
+
+.tool-btn{
+  margin: 10px;
+  font-size: 90%;
+  flex: 1;
+}
+.tool-button{
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  width: 65%;
+  height: auto;
+  background-color: #efefef;
   cursor: pointer;
-  max-width: 30%;
-  width: 130px;
-  }
-  
-  .submit-button:hover {
-  background-color: #0056b3;
-  }
+}
+.tool-button a{
+  margin: 5%;
+  margin-left: 0;
+}
+.tool-button:hover{
+  background-color: #76CDE6;
+}
+.tool-button img{
+  height: auto;
+  width: 17%;
+  margin: 1%;
+  margin-left: 2%;
+}
 
-  /*流程图*/
-  .img-tool{
-    text-align: center;
-    background-color: white;
-  }
-  /*文字"使用示意图"*/
-  .img-tool div{
-    left: 0;
-    position: absolute;
-    color: #00b7ff;
-    font-size: 1.5em;
-    font-weight:bold;
-    margin-left: 10px;
-  }
-  
-
-  /*文件处理时加载图片*/
-  .processing-status {
-    position: absolute;
+  /* 导航菜单 */
+  .navigation{
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    height: 5vh;
+    background-color: white;
     display: flex;
-    justify-content: center;
     align-items: center;
-    background-color: rgb(254, 255, 244); /* 背景颜色 */
-    z-index: 1; /* 确保加载图片位于进度条之上 */
+    position: fixed;
+    z-index: 5;
+    box-shadow: 0 10px 15px -5px rgba(0,0,0,0.1);
+  }
+  .navigation img{
+    width: 10vh;
+    height: auto;
+    margin-left: 5vh;
+  }
+  .nav-main-a {
+    margin-left: 5vh;
+  }
+
+  /* 左侧目录 */
+  .nav-list{
+    position: fixed;
+    left: 0;
+    z-index: 5;
+    /* overflow-y: auto;  超出使用滚轮 */
+    list-style-position: inside; /* 默认是outside，inside可以使列表标记与内容一起内联排列 */
+    text-align: left; /* 确保文本靠左对齐 */
+    margin: 0; /* 可选：移除默认的外边距 */
+    margin-top: 15vh;
+    margin-left: 2vh;
+    border-radius: 4px;
+    background-color: white;
+    padding: 1vh;
+    border-radius: 3px;
+
+  }
+  .nav-list-ul{
+    margin-top: 0;
+    padding: 0;
+    color: #f5f5fb;
+  }
+  .nav-list-ul li>ol{
+    padding-left: 1vh;
+  }
+  .nav-list-ul ol>li{
+    margin-bottom: 1vh;
+    font-size: 85%;
+  }
+  .nav-list-ul ol>li:hover{
+    background-color: #e5e5ff;
+  }
+  a{
+    text-decoration: none;
+  }
+  .li-title{
+    font-size: 88%;
+    font-weight: bold;
+    color: #6c6c6c;
+  }
+  .nav-list li{
+    list-style-type: none;
+    list-style-position: inside; /* 默认是outside，inside可以使列表标记与内容一起内联排列 */
+    padding-left: 0;
+    margin-top: 0;
+  }
+  .nav-main {
+    background-color: #f5f5fb;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* 新窗口 */
+  .container {
+    margin-left: 20vh;
+    height: 100%;
+    padding-top: 7vh;
+    }
+  
+  
+
+    /*@media (min-width: 768px) {
+      .container {
+        max-width: 600px;  在平板及更大屏幕上设定固定最大宽度 
+        max-height: 80%;  调整较大屏幕上的最大高度 
+      }
+    }*/
+  
+    /*标题*/
+    .function-module{
+      border: 1px solid #ccc;
+      width: 98%;
+      border-radius: 4px;
+      background-color: white;
+    }
+    .function-head{
+      display: flex;
+      align-items: center;
+      width: 100%;
+      background-color: #fafeff;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .function-module img{
+      height: 30px;
+      width: auto;
+      margin: 1%;
+      margin-left: 1%;
+      position: relative;
+    }
+
+    /* 功能模块 */
+    .function-middle{
+      padding-top: 3vh;
+      display: flex;
+    }
+    /* 左侧上传及处理 */
+    .function-middle-left{
+      border: 1px solid #ccc;
+      width: 50%;
+      margin-left: 1vh;
+      margin-bottom: 1vh;
+    }
+    .function-middle-title{
+      display: flex;
+      align-items: center;
+    }
+    .function-middle-title img{
+      height: 25px;
+      width: auto;
+      margin: 1%;
+      margin-left: 2%;
+      position: relative;
+    }
+
+    /*窗口中间按钮进度栏*/
+    /*拖拽上传框样式*/
+  .file-uploader {
+    border: 2px dashed #ccc;
+    margin-left:1vh;
+    margin-right: 1vh;
+    margin-bottom: 1vh;
+    height: 40vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+  .file-uploader:hover {
+    background-color: #f9f9f9;
+  }
+
+  .file-uploader button {
+    position: relative;
+    cursor: pointer;
+  }
+  progress {
+    width: 100%;
+    margin-top: 10px;
   }
   
-  .loading-image {
-    width: 200px; 
-    height: auto;
-    margin-bottom: 10px; /* 使图片和消息之间有一些间距 */
+  /*进度条文字样式*/
+  .upload-status {
+    justify-content: center;
+    align-items: center;
+    background-color: white; 
+    z-index: 2; /* 确位于之上 */
+    width: 100%;
+    height: 100%;
   }
-  .processing-message {
+  
+  .upload-status-out {
+    justify-content: center;
+    align-items: center;
+    display:flex;
+    margin-top: 20%;
+    flex : 1;
+  }
+  .upload-status-in  {
+    flex : 1;
+  }
+
+  /* 右侧操作 */
+  .function-middle-right{
+    border: 1px solid #ccc;
+    width: 50%;
+    margin-right: 1vh;
+    margin-bottom: 1vh;
+    display:flex;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /*提交输入框*/
+  .upload-btn {
+    justify-content: center;
+    align-items: center;
+    flex : 1;
+    display: flex;
+  }
+
+  
+  /*文字样式*/
+  .upload-btn label,option,select{
+    color:#2981e6;
+    font-weight:bold;
+    font-size: 1em;
+  }
+  .upload-btn p{
+      color:#2981e6;
+      font-size:18px;
+      font-weight:bold;
+      margin:10px;
+  }
+
+  /*提交按钮*/
+  /* Submit Button */
+  .submit-button {
+    background-color: #00b1fc;
+    border-radius: 6px;
+    border: 1px solid blue;
+    padding:  1%;
+    border: 1px;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+    width: 15vh;
+    }
+    
+    .submit-button:hover {
+    background-color: #0056b3;
+    }
+  
+    .upload-message{
+        display: grid;
+    }
+    .function-text{
+      border: 1px solid #ccc;
+      width: 98%;
+      border-radius: 4px;
+      margin-top: 2vh;
+      background-color: white;
+    }
+    .text-content{
+      border-bottom: 2px solid #70707024;
+      margin-left:1vh;
+      margin-right: 1vh;
+    }
+    .text-head{
+      display: flex;
+      align-items: center;
+      width: 100%;
+      background-color: #fafeff;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .text-head img{
+      height: 30px;
+      width: auto;
+      margin: 1%;
+      margin-left: 1%;
+      position: relative;
+    }
+    /*流程图*/
+    .img-tool{
+      text-align: center;
+      background-color: white;
+    }
+    
+  
+    /*文件处理时加载图片*/
+    .processing-status {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* 确保加载图片位于进度条之上 */
+    }
+    
+    .processing-status img{
+      width: 20vh;
+      height: auto;
+    }
+
+    .processing-message {
+      font-size: 20px;
+      color: #5db6ff;
+      font-weight: bold;
+    }
+  
+    /*输入框*/
+  /* 输入框容器 */
+  .input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+    max-width: 450px;
+    margin-bottom: 5vh;
+  }
+  
+  .input-container:focus-within {
+    border-color: #2981e6;
+    box-shadow: 0 0 8px rgba(147,224,255);
+  }
+  
+  /* 标签样式 */
+  .input-label {
+    margin-right: 10px;
+    color: #555;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  
+  /* 自定义数字输入框容器 */
+  
+  /* 输入框和选择框的样式 */
+  .custom-input{
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 5px;
     font-size: 16px;
-    color: #5db6ff;
-    font-weight: bold;
+    width: 100px; 
+    background-color: #efefef;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: 0;
   }
-
-  /*输入框*/
-/* 输入框容器 */
-.input-container {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 5px;
-  background-color: #fff;
-  transition: all 0.3s ease-in-out;
-  max-width: 500px; /* 设置最大宽度 */
-  max-height: 50px;
-  margin-left: 15%;
-}
-
-.input-container:focus-within {
-  border-color: #2981e6;
-  box-shadow: 0 0 8px rgba(147,224,255);
-}
-
-/* 标签样式 */
-.input-label {
-  margin-right: 10px;
-  color: #555;
-  font-size: 14px;
-  flex-shrink: 0;
-}
-
-/* 自定义数字输入框容器 */
-.number-input {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  overflow: hidden;
-  width: 100%;
-  max-width: 200px;
-}
-
-/* 输入框和选择框的样式 */
-.custom-input{
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 5px;
-  font-size: 16px;
-  max-width: 170px; /* 设置最大宽度 */
-  background-color: #efefef;
-  border-radius: 5px;
-  margin-left: auto;
-  margin-right: 0;
-}
-.custom-select {
-  flex-grow: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  padding: 5px;
-  font-size: 16px;
-  max-width: 500px; /* 设置最大宽度 */
-  margin-left: 15%;
-}
-
-/* 隐藏所有浏览器的默认上下箭头 */
-input[type="number"]::-webkit-inner-spin-button, 
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* 输入框和按钮的包裹容器 */
-.number-input-wrapper {
-  display: flex;
-  align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  overflow: hidden;
-  width: 100%;
-  transition: all 0.3s ease-in-out;
-  max-width: 600px; /* 设置最大宽度 */
-  margin-left: 10%;
-}
-
-.number-input-wrapper:focus-within {
-  border-color: #2981e6;
-  box-shadow: 0 0 8px rgba(147,224,255);
-}
-
-/* 按钮样式 */
-.increment-btn, .decrement-btn {
-  background-color: #f9f9f9;
-  border: none;
-  outline: none;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.increment-btn:hover, .decrement-btn:hover {
-  background-color: #e0e0e0;
-}
-
-.increment-btn:active, .decrement-btn:active {
-  background-color: #d4d4d4;
-}
-
-/* 选择框的样式 */
-.select-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.select-label {
-  margin-right: 10px;
-  color: #555;
-  font-size: 14px;
-}
-
-.custom-select {
-  appearance: none;
-  background-color: #fff;
-  padding: 8px 12px;
-  width: 100%;
-  height: 50px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23aaa"><path d="M7 10l5 5 5-5z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 20px;
-  cursor: pointer;
-}
-
-.custom-select:focus {
-  border-color: #2981e6;
-  box-shadow: 0 0 8px rgba(147,224,255);
-  outline: none;
-}
-
-.custom-select option {
-  background-color: white;
-  padding: 8px 12px;
-}
-
-.custom-select option:disabled {
-  color: #aaa;
-  font-style: italic;
-}
-
-.custom-select:hover {
-  border-color: #bbb;
-}
-
-.custom-select:active {
-  border-color: #2981e6;
-}
-
-/* 确保在Firefox中也能隐藏默认的下拉箭头 */
-.custom-select::-ms-expand {
-  display: none;
-}
-
-/* 为WebKit浏览器（如Chrome和Safari）设置额外的样式 */
-@supports (-webkit-appearance: none) or (-moz-appearance: none) {
-  .custom-select {
+  
+  /* 隐藏所有浏览器的默认上下箭头 */
+  input[type="number"]::-webkit-inner-spin-button, 
+  input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+    margin: 0;
   }
-}
+  
+  
+  /* 按钮样式 */
+  .increment-btn, .decrement-btn {
+    background-color: #f9f9f9;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .increment-btn:hover, .decrement-btn:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .increment-btn:active, .decrement-btn:active {
+    background-color: #d4d4d4;
+  }
+  
+  /* 选择框的样式 */
+  .select-container {
+    margin-bottom: 5vh;
+  }
+  
+  .select-label {
+    color: #555;
+  }
+  
+  .custom-select {
+    appearance: none;
+    background-color: #fff;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background-image: url('../style/down.svg');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    cursor: pointer;
+    max-width: 450px;
+    width: 450px;
+    height: 45px;
+    max-height: 45px;
+  }
+  
+  .custom-select:focus {
+    border-color: #2981e6;
+    box-shadow: 0 0 8px rgba(147,224,255);
+    outline: none;
+  }
+  
+  .custom-select option {
+    background-color: white;
+    padding: 8px 12px;
+  }
+  
+  .custom-select option:disabled {
+    color: #aaa;
+    font-style: italic;
+  }
+  
+  .custom-select:hover {
+    border-color: #bbb;
+  }
+  
+  .custom-select:active {
+    border-color: #2981e6;
+  }
+  
+  /* 确保在Firefox中也能隐藏默认的下拉箭头 */
+  .custom-select::-ms-expand {
+    display: none;
+  }
+  
+  /* 为WebKit浏览器（如Chrome和Safari）设置额外的样式 */
+  @supports (-webkit-appearance: none) or (-moz-appearance: none) {
+    .custom-select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+  }
+
+
+  /* 文档显示和下载 */
+  .upload-txt{
+    width: 100%;
+  }
+  .txt-content {
+    margin-left: 1vh;
+    margin-right: 1vh;
+    overflow: auto;
+    height: 39vh;
+    display: flex;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    margin-top: 1vh;
+  }
+  .txt-content pre {
+    white-space: pre-wrap; /* 保留空白符序列，但是正常地进行换行 */
+    word-wrap: break-word; /* 允许长单词或 URL 地址换行到下一行 */
+    padding: 10px;
+    font-family: monospace;/* 设置字体为等宽字体 */
+    width: 80vh;
+    width: 100%;
+    height: 100%;
+    margin-top: 1vh;
+  }
+  .txt-close {
+    margin-top: 1vh;
+    margin-bottom: -2vh;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .txt-close button{
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+    border: none;
+  }
+  .download-btn{
+    background-color: #E0DFFF;
+    border-radius: 5px;
+  }
+  .download-btn:hover{
+    background-color: #9C98FF;
+    color: white;
+  }
+  .close-btn{
+    background-color: #ff9797;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+  }
+  .close-btn:hover{
+    background-color: rgb(255, 66, 93);
+    color: white;
+  }
+  .close-x{
+    position: relative;
+    background-color: #00b1fc;
+    border: none;
+    margin-top: -2vh;
+  }
+  .close-btn-x{
+    top: -8px;
+    right: 0;
+    position: absolute;
+    background-color: #ff9797;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+  .close-btn-x:hover{
+    background-color: rgb(255, 66, 93);
+    
+  }
+  
+  
+  
+  
+  
+  /**
+   *                    _ooOoo_
+   *                   o8888888o
+   *                   88" . "88
+   *                   (| -_- |)
+   *                    O\ = /O
+   *                ____/`---'\____
+   *                 .' \\| |// `.
+   *               / \\||| : |||// \
+   *             / _||||| -:- |||||- \
+   *               | | \\\ - /// | |
+   *             | \_| ''\---/'' | |
+   *              \ .-\__ `-` ___/-. /
+   *           ___`. .' /--.--\ `. . __
+   *        ."" '< `.___\_<|>_/___.' >'"".
+   *       | | : `- \`.;`\ _ /`;.`/ - ` : | |
+   *         \ \ `-. \_ __\ /__ _/ .-` / /
+   * ======`-.____`-.___\_____/___.-`____.-'======
+   *                    `=---='
+   *
+   * .............................................
+   *          佛祖保佑             永无BUG
+   */
