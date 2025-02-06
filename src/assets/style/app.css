@@ -196,11 +196,17 @@ body, html {
     padding-left: 1vh;
   }
   .nav-list-ul ol>li{
-    margin-bottom: 1vh;
     font-size: 85%;
+    height: 30px;
+    align-items: center;
+    display: flex;
+    margin-top: 1vh;
+    color: #9C98FF;
   }
   .nav-list-ul ol>li:hover{
     background-color: #e5e5ff;
+    color: white;
+    border-radius: 3px;
   }
   a{
     text-decoration: none;
@@ -596,7 +602,7 @@ body, html {
     border-radius: 5px;
     margin-top: 1vh;
   }
-  .txt-content pre {
+  .txt-content table {
     white-space: pre-wrap; /* 保留空白符序列，但是正常地进行换行 */
     word-wrap: break-word; /* 允许长单词或 URL 地址换行到下一行 */
     padding: 10px;
@@ -663,8 +669,10 @@ body, html {
     
   }
   
-  
-  
+
+  table,td {
+    border: 1px dashed #444444; /* 2像素宽的灰色虚线边框 */
+  }
   
   
   /**

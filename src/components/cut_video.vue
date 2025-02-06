@@ -26,7 +26,7 @@
             />
             <!-- 显示已选择的文件名 -->
             <p v-if="file && showFileDetails">
-              已选择文件：{{ file.name }}
+              已选择文件：{{ file.name }} ({{ fileSize(file.size) }})
               &nbsp;
               <button @click="openFileInput">重新选择</button>
             </p>
@@ -130,6 +130,9 @@ import { saveAs } from 'file-saver'; // 保存文件的库
 
 export default {
   setup() {
+    const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5GB in bytes
+    const SUPPORTED_FORMATS = ['.zip', '.rar', '.7z'];// 支持的文件格式
+
     // 存储选中的单个文件
     const file = ref(null);
     // 引用文件输入元素
@@ -144,6 +147,9 @@ export default {
     const errorMessage = ref('');
     
     const uploadForm = ref(null); // 引用整个表单元素
+
+    // 标记文件是否正在处理
+    const isProcessing = ref(false);
 
     // 控制文件详情的显示
     const showFileDetails = ref(true);
@@ -179,32 +185,6 @@ export default {
       isFocused.value = fps.value !== null && fps.value !== '';
     };
 
-    const handleSubmit = (event) => {
-      event.preventDefault(); // 阻止表单的默认提交行为
-
-      // 检查文件是否为空
-      if (!file.value) {
-        errorMessage.value = '请选择一个文件进行上传！';
-        return;
-      }
-
-      // 检查表单是否有效
-      const form = uploadForm.value;
-      if (form && !form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-
-      // 表单有效，可以继续执行上传逻辑
-      console.log('FPS:', fps.value);
-      console.log('File Ext:', fileExt.value);
-
-      // 调用 uploadFile 方法进行文件上传
-      uploadFile();
-    };
-
-    // 标记文件是否正在处理
-    const isProcessing = ref(false);
     // 打开文件选择器的方法
     const openFileInput = () => {
       if (fileInput.value) {
@@ -215,28 +195,51 @@ export default {
 
     // 当文件输入框的值改变时触发，即选择了新文件
     const onFileChange = (event) => {
-      // 获取选中的文件
-      const selectedFile = event.target.files[0];
-      if (selectedFile) {
-        // 保存选中的文件到 file 变量中
-        file.value = selectedFile;
-        errorMessage.value = ''; // 清除错误消息
-      } else {
-        errorMessage.value = '请选择一个文件进行上传！';
-      }
+      handleFileSelection(event.target.files[0]);
     };
 
     // 处理文件拖放事件
     const onDrop = (event) => {
-      // 获取拖放的文件
-      const droppedFile = event.dataTransfer.files[0];
-      if (droppedFile) {
-        // 保存拖放的文件到 file 变量中
-        file.value = droppedFile;
-        errorMessage.value = ''; // 清除错误消息
-      } else {
-        errorMessage.value = '请选择一个文件进行上传！';
+      handleFileSelection(event.dataTransfer.files[0]);
+    };
+
+    const handleFileSelection = (selectedFile) => {
+      if (!selectedFile) {
+        return;
       }
+
+      // 检查文件大小
+      if (selectedFile.size > MAX_FILE_SIZE) {
+        errorMessage.value = '文件大小不能超过5G！';
+        return;
+      }
+
+      // 检查文件格式
+      const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+      if (!SUPPORTED_FORMATS.includes(`.${fileExtension}`)) {
+        errorMessage.value = '不支持的文件格式，请选择 .zip, .rar 或 .7z 文件！';
+        return;
+      }
+
+      // 保存选中的文件到 file 变量中
+      file.value = selectedFile;
+      errorMessage.value = ''; // 清除错误消息
+    };
+
+    const handleSubmit = async (event) => {
+      event.preventDefault(); // 阻止表单的默认提交行为
+
+      // 检查文件是否为空
+      if (!file.value) {
+        errorMessage.value = '请选择一个文件进行上传！';
+        return;
+      }
+
+      // 表单有效，可以继续执行上传逻辑
+      console.log('FPS:', fps.value);
+      console.log('File Ext:', fileExt.value);
+
+      await uploadFile();
     };
 
     // 开始上传文件
@@ -315,6 +318,14 @@ export default {
       }
     };
 
+    const fileSize = (size) => {
+      if (size === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+      const i = Math.floor(Math.log(size) / Math.log(k));
+      return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    };
+
     // 返回需要在模板中使用的变量和方法
     return {
       file,
@@ -337,7 +348,8 @@ export default {
       handleFocus,
       handleBlur, 
       isFocused,
-      showFileDetails
+      showFileDetails,
+      fileSize
     };
   },
 };

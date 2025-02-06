@@ -27,7 +27,7 @@
             />
             <!-- 显示已选择的文件名 -->
             <p v-if="file && showFileDetails">
-              已选择文件：{{ file.name }}
+              已选择文件：{{ file.name }} ({{ fileSize(file.size) }})
               &nbsp;
               <button @click="openFileInput">重新选择</button>
             </p>
@@ -58,34 +58,40 @@
 
         </div>
 
-<!-- 右侧操作提交区域 -->
-<div class="function-middle-right">
-  <!-- 上传按钮，点击后打开文件选择对话框 -->
-  <div class="upload-btn" v-if="!txtContent">
-    <form ref="uploadForm" @submit="handleSubmit($event)">
-      <p v-if="message">{{ message }}</p>
-      <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+        <!-- 右侧操作提交区域 -->
+        <div class="function-middle-right">
+          <!-- 上传按钮，点击后打开文件选择对话框 -->
+          <div class="upload-btn" v-if="!txtContent">
+            <form ref="uploadForm" @submit="handleSubmit($event)">
+              <p v-if="message">{{ message }}</p>
+              <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
 
-      <button type="submit" class="submit-button" :disabled="isUploading || isProcessing">提&nbsp;&nbsp;交</button>
-    </form>
-  </div>
+              <button type="submit" class="submit-button" :disabled="isUploading || isProcessing">提&nbsp;&nbsp;交</button>
+            </form>
+          </div>
 
-  <!-- 显示txt内容和提供下载选项 -->
-  <div class="upload-txt" v-else>
-    <div class="close-x">
-      <button @click="closeTxtContent" class="close-btn-x">&times;</button>
-    </div>
-    <div class="txt-content">
-      <pre>{{ txtContent }}</pre>
-    </div>
+          <!-- 显示txt内容和提供下载选项 -->
+          <div class="upload-txt" v-else>
+            <div class="close-x">
+              <button @click="closeTxtContent" class="close-btn-x">&times;</button>
+            </div>
+            <div class="txt-content">
+              <table v-if="tableData.length" style="border: 1;">
+                <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+                  <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+                </tr>
+              </table>
 
-    <div class="txt-close">
-      <button @click="downloadTxt" class="download-btn">下载</button>
-      <button @click="closeTxtContent" class="close-btn">关闭</button>
-    </div>
+              <!-- <pre>{{ txtContent }}</pre> -->
+            </div>
 
-  </div>
-</div>
+            <div class="txt-close">
+              <button @click="downloadTxt" class="download-btn">下载</button>
+              <button @click="closeTxtContent" class="close-btn">关闭</button>
+            </div>
+
+          </div>
+        </div>
 
       </div>
     </div>
@@ -98,8 +104,8 @@
       </div>
 
       <div class="text-content">
-      <p>功能: 结合提示词对图片进行匹配度评分</p>
-      <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(上传的压缩包内包含同名的文件夹,文件夹名不能有中文)</a>,文件夹内含以英文提示词命名的文件夹<a>(提示词若包含空格应以“_”代替,例:mountain_range)</a>,提示词文件夹内为图片，选择文件后点击提交即可<a>(文件大小不能超过5G)</a></p>
+        <p>功能: 结合提示词对图片进行匹配度评分</p>
+        <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(上传的压缩包内包含同名的文件夹,文件夹名不能有中文)</a>,文件夹内含以英文提示词命名的文件夹<a>(提示词若包含空格应以“_”代替,例:mountain_range)</a>,提示词文件夹内为图片，选择文件后点击提交即可<a>(文件大小不能超过5G)</a></p>
       </div>
       <div class="img-tool">
         <img alt="Vue logo" src="./tool-explain/tool5.jpg" width="900px" height="auto" class="image">
@@ -115,6 +121,9 @@ import { saveAs } from 'file-saver'; // 保存文件的库
 
 export default {
   setup() {
+    const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5GB in bytes
+    const SUPPORTED_FORMATS = ['.zip', '.rar', '.7z'];// 支持的文件格式
+
     // 存储选中的单个文件
     const file = ref(null);
     // 引用文件输入元素
@@ -133,6 +142,8 @@ export default {
     const showFileDetails = ref(true);
     // 存储txt内容
     const txtContent = ref('');
+    // 存储文件名
+    const fileName = ref('default.txt');
 
     // 打开文件选择器的方法
     const openFileInput = () => {
@@ -142,7 +153,51 @@ export default {
       }
     };
 
-    const handleSubmit = (event) => {
+    // 当文件输入框的值改变时触发，即选择了新文件
+    const onFileChange = (event) => {
+      handleFileSelection(event.target.files[0]);
+    };
+
+    // 处理文件拖放事件
+    const onDrop = (event) => {
+      handleFileSelection(event.dataTransfer.files[0]);
+    };
+
+    const handleFileSelection = (selectedFile) => {
+      if (!selectedFile) {
+        return;
+      }
+
+      // 检查文件大小
+      if (selectedFile.size > MAX_FILE_SIZE) {
+        errorMessage.value = '文件大小不能超过5G！';
+        return;
+      }
+
+      // 检查文件格式
+      const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+      if (!SUPPORTED_FORMATS.includes(`.${fileExtension}`)) {
+        errorMessage.value = '不支持的文件格式，请选择 .zip, .rar 或 .7z 文件！';
+        return;
+      }
+
+      // 保存选中的文件到 file 变量中
+      file.value = selectedFile;
+      errorMessage.value = ''; // 清除错误消息
+    };
+
+// 添加解析txtContent的方法
+const parseTxtContentToTable = (txtContent) => {
+  // 假设每一行代表表格的一行，每一行中的每个元素代表表格的一个单元格
+  const rows = txtContent.trim().split('\n');
+  return rows.map(row => row.split('\t').map(cell => cell.trim()));
+};
+
+// 添加一个响应式变量来存储解析后的表格数据
+const tableData = ref([]);
+
+// 在handleSubmit方法中调用parseTxtContentToTable方法，并将结果赋值给tableData
+    const handleSubmit = async (event) => {
       event.preventDefault(); // 阻止表单的默认提交行为
 
       // 检查文件是否为空
@@ -150,29 +205,8 @@ export default {
         errorMessage.value = '请选择一个文件进行上传！';
         return;
       }
-
-      // 调用 uploadFile 方法进行文件上传
-      uploadFile();
-    };
-
-    // 当文件输入框的值改变时触发，即选择了新文件
-    const onFileChange = (event) => {
-      // 获取选中的文件
-      const selectedFile = event.target.files[0];
-      if (selectedFile) {
-        // 保存选中的文件到 file 变量中
-        file.value = selectedFile;
-      }
-    };
-
-    // 处理文件拖放事件
-    const onDrop = (event) => {
-      // 获取拖放的文件
-      const droppedFile = event.dataTransfer.files[0];
-      if (droppedFile) {
-        // 保存拖放的文件到 file 变量中
-        file.value = droppedFile;
-      }
+      
+      await uploadFile();
     };
 
     // 开始上传文件
@@ -211,11 +245,23 @@ export default {
               }
             }
           },
-          responseType: 'text'  // 确保响应内容作为txt!!!
+          responseType: 'text',  // 确保响应内容作为txt!!!
         });
+
+        // 从响应头中获取文件名
+        const contentDisposition = response.headers['content-disposition'];
+        fileName.value = 'default.txt'; // 默认文件名
+        if (contentDisposition && contentDisposition.indexOf('attachment') !== -1) {
+          const fileNameMatch = contentDisposition.match(/filename="?(.+)"?$/i);
+          if (fileNameMatch.length > 1) {
+            fileName.value = fileNameMatch[1];
+          }
+        }
 
         // 获取txt内容
         txtContent.value = response.data.trim();
+        // 解析txt内容为表格数据
+        tableData.value = parseTxtContentToTable(txtContent.value);
 
         // 显示文件处理成功的消息
         message.value = '文件处理成功.';
@@ -251,13 +297,20 @@ export default {
     // 下载txt文件的方法
     const downloadTxt = () => {
       const blob = new Blob([txtContent.value], { type: 'text/plain' });
-      const randomFileName = Math.random().toString(36).substring(2, 15) + '.txt';
-      saveAs(blob, randomFileName);
+      saveAs(blob, fileName.value);
     };
 
     // 关闭txt内容区域的方法
     const closeTxtContent = () => {
       txtContent.value = '';
+    };
+
+    const fileSize = (size) => {
+      if (size === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+      const i = Math.floor(Math.log(size) / Math.log(k));
+      return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     };
 
     // 返回需要在模板中使用的变量和方法
@@ -277,7 +330,9 @@ export default {
       handleSubmit,
       txtContent,
       downloadTxt,
-      closeTxtContent
+      closeTxtContent,
+      fileSize,
+      tableData,
     };
   },
 };
