@@ -49,6 +49,38 @@ const routes = [
             name: 'dedup_data',
             component: dedup_data
           },
+          {
+            path:'/format_json',
+            name:'format_json',
+            component: () => import('../components/format_json.vue')
+
+          },
+          {
+            path:'/convert_image',
+            name:'convert_image',
+            component: () => import('../components/convert_image.vue')
+          },
+          {
+            path:'/ocr_image',
+            name:'ocr_image',
+            component: () => import('../components/ocr_image.vue')
+          },
+          {
+            path:'/rename_file',
+            name:'rename_file',
+            component: () => import('../components/rename_file.vue')
+          },
+          {
+            path:'/ocr_text',
+            name:'ocr_text',
+            component: () => import('../components/ocr_text.vue')
+          },
+          {
+            path:'/detect_eval',
+            name:'detect_eval',
+            component: () => import('../components/detect_eval.vue')
+          }
+
         ]
       },
 

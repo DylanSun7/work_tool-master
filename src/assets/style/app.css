@@ -4,17 +4,25 @@ body, html {
   padding: 0;
   height: 100%;
   
-  
+}
+
+@font-face {
+  font-family: "Smiley_Sans";
+  font-weight: 400;
+  src:  url('../style/Smiley_Sans2.woff2') format('woff2'),
+        url('../style/Smiley_Sans1.woff') format('woff');
+  font-display: swap;
 }
 
 .main-background {
   position: fixed;
-  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   z-index: -3;
   background-color: rgb(243, 243, 243);
-  overflow: hidden; 
+  overflow:scroll; 
 }
 /* 视频背景 */
 .head-background{
@@ -82,6 +90,7 @@ body, html {
 /* 工具菜单 */
 .out-tool-menu {
  padding-top: 15%;
+ z-index: -3;
 }
 
 .tool-menu {
@@ -92,9 +101,9 @@ body, html {
   margin: 0 auto; /* 上下边距为0，左右自动计算实现水平居中 */
   margin-top: 0.5%; /* 可以根据需要调整 */
   background-color: rgb(250, 253, 255);
-  height: 25vh;
-  max-height: 25vh;
-}
+  height: 22vh;
+  max-height: 22vh;
+} 
 
 .tool-middle {
   margin-left: 2%;
@@ -118,6 +127,8 @@ body, html {
 .tool-list{
   display: flex;
   text-align: center;
+  flex-wrap: wrap; /* 允许按钮换行 */
+
 }
 
 .tool-btn{
@@ -129,22 +140,24 @@ body, html {
   border-radius: 4px;
   display: flex;
   align-items: center;
-  width: 65%;
+  width: auto;
+  max-width: 170px;
   height: auto;
   background-color: #efefef;
   cursor: pointer;
 }
 .tool-button a{
-  margin: 5%;
-  margin-left: 0;
+  /* margin: 5%; */
+  margin-left: 1vh;
 }
 .tool-button:hover{
   background-color: #76CDE6;
 }
 .tool-button img{
   height: auto;
-  width: 17%;
-  margin: 1%;
+  width: 19%;
+  margin-top: 2%;
+  margin-bottom: 2%;
   margin-left: 2%;
 }
 
@@ -175,17 +188,12 @@ body, html {
     position: fixed;
     left: 0;
     z-index: 5;
-    /* overflow-y: auto;  超出使用滚轮 */
+    overflow-y: auto;  
     list-style-position: inside; /* 默认是outside，inside可以使列表标记与内容一起内联排列 */
     text-align: left; /* 确保文本靠左对齐 */
     margin: 0; /* 可选：移除默认的外边距 */
-    margin-top: 15vh;
-    margin-left: 2vh;
-    border-radius: 4px;
-    background-color: white;
-    padding: 1vh;
-    border-radius: 3px;
-
+    margin-top: 7vh;
+    padding-left: 0.5vh;
   }
   .nav-list-ul{
     margin-top: 0;
@@ -193,26 +201,53 @@ body, html {
     color: #f5f5fb;
   }
   .nav-list-ul li>ol{
-    padding-left: 1vh;
+    padding-left: 0;
   }
   .nav-list-ul ol>li{
-    font-size: 85%;
+    font-size: 90%;
     height: 30px;
     align-items: center;
     display: flex;
-    margin-top: 1vh;
-    color: #9C98FF;
+    margin-top: 15px;
+    color: #000000;
+    width: auto;
   }
-  .nav-list-ul ol>li:hover{
-    background-color: #e5e5ff;
+  .nav-list-ul ol>li>a:hover{
+    background-color: #7A7AFA;
     color: white;
-    border-radius: 3px;
+    height: 35px;
+    align-items: center;
+    display: flex;
   }
   a{
     text-decoration: none;
   }
+  ol>li>a:visited {
+    color: inherit; /* 或者指定任何你想要的颜色，比如初始颜色 */
+  }
+
+    /* 单击后列表 */
+    .active {
+      color: #7A7AFA !important;
+      font-weight: bold;
+      font-size: 1.1em;
+    } 
+    .nav-list-ul li a.active {
+      border-left: 3px solid #1890ff;
+  }
+    .active:hover {
+    background-color: initial !important;
+    color: #7A7AFA !important;
+      }
   .li-title{
-    font-size: 88%;
+    font-size: 105%;
+    font-weight: bold;
+    color: #6c6c6c;
+    margin-top: 1vh;
+  }
+
+  .li-title-top{
+    font-size: 105%;
     font-weight: bold;
     color: #6c6c6c;
   }
@@ -232,7 +267,7 @@ body, html {
 
   /* 新窗口 */
   .container {
-    margin-left: 20vh;
+    margin-left: 145px;
     height: 100%;
     padding-top: 7vh;
     }
@@ -282,27 +317,26 @@ body, html {
       margin-left: 1vh;
       margin-bottom: 1vh;
     }
-    .function-middle-title{
-      display: flex;
-      align-items: center;
-    }
-    .function-middle-title img{
-      height: 25px;
-      width: auto;
-      margin: 1%;
-      margin-left: 2%;
-      position: relative;
-    }
 
     /*窗口中间按钮进度栏*/
     /*拖拽上传框样式*/
+  .el-uploader{
+    
+    margin-left:1vh;
+    margin-right: 1vh;
+    margin-bottom: 1vh;
+    margin-top: 1vh;
+    height: 40vh;
+    place-items: center;
+    text-align: center;
+  }
   .file-uploader {
     border: 2px dashed #ccc;
     margin-left:1vh;
     margin-right: 1vh;
     margin-bottom: 1vh;
+    margin-top: 1vh;
     height: 40vh;
-    display: grid;
     place-items: center;
     text-align: center;
   }
@@ -310,35 +344,71 @@ body, html {
     background-color: #f9f9f9;
   }
 
+  .upload-drag .el-upload-dragger{
+    height: 25vh;
+    border: 2px dashed #00ACE7 !important;
+  }
+  .upload-drag .el-upload-list {
+    display: none;
+  }
   .file-uploader button {
     position: relative;
     cursor: pointer;
   }
-  progress {
+  el-progress {
     width: 100%;
-    margin-top: 10px;
+  }
+  #upload{
+    width: auto;
+    height: 23vh;
+  }
+  
+
+  .upload-space {
+    font-family: 'Smiley_Sans',sans-serif;
+    width: 100%;
+    height: 100%;
   }
   
   /*进度条文字样式*/
   .upload-status {
-    justify-content: center;
-    align-items: center;
     background-color: white; 
-    z-index: 2; /* 确位于之上 */
+    z-index: 4; /* 确位于之上 */
+    display:flex;
     width: 100%;
     height: 100%;
+    flex-direction: column; /* 设置主轴为垂直方向 */
   }
   
   .upload-status-out {
     justify-content: center;
     align-items: center;
     display:flex;
-    margin-top: 20%;
     flex : 1;
   }
   .upload-status-in  {
     flex : 1;
+    margin-right: 1vh;
+    margin-left: 1vh;
   }
+
+
+      /*文件处理时加载图片*/
+      .processing-status {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        z-index: 5; /* 确保加载图片位于进度条之上 */
+        pointer-events: none; /* 阻止鼠标事件穿透 */
+      }
+      
+      .processing-status img{
+        width: 20vh;
+        height: auto;
+      }
 
   /* 右侧操作 */
   .function-middle-right{
@@ -372,6 +442,28 @@ body, html {
       font-weight:bold;
       margin:10px;
   }
+  .input-tag {
+    width:80vh;
+    margin-bottom: 2vh;
+  }
+  .slider-block {
+    width:80vh;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+    margin-top: 3vh;
+    margin-bottom: 4vh;
+  }
+  .demonstration {
+    width: 240px;
+    align-items: center;
+    display: flex;
+  }
+  .demonstration img{
+    width: 15px;
+    height: auto;
+  }
 
   /*提交按钮*/
   /* Submit Button */
@@ -390,10 +482,23 @@ body, html {
     .submit-button:hover {
     background-color: #0056b3;
     }
-  
-    .upload-message{
-        display: grid;
+      .submit-OCR {
+    background-color: #00b1fc;
+    border-radius: 6px;
+    border: 1px solid blue;
+    padding:  1%;
+    border: 1px;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+    width: 100px;
+    height: 45px;
     }
+    
+    .submit-OCR:hover {
+    background-color: #0056b3;
+    }
+
     .function-text{
       border: 1px solid #ccc;
       width: 98%;
@@ -406,6 +511,25 @@ body, html {
       margin-left:1vh;
       margin-right: 1vh;
     }
+    .txt-content-li li{
+      margin-top: 1vh;
+    }
+    .txt-content-li-out{
+      position: relative; /* 设置相对定位 */
+      list-style: none; 
+      padding-left: 20px;
+    }
+    .txt-content-li-out::before{
+      content: ''; /* 插入内容 */
+      display: inline-block;
+      width: 20px; /* 图片宽度 */
+      height: 20px; /* 图片高度 */
+      background-image: url('../style/attention.png'); /* 替换为你的图片路径 */
+      background-size: cover; /* 确保图片完全填充 */
+      position: absolute;
+      left: 0;
+    }
+
     .text-head{
       display: flex;
       align-items: center;
@@ -428,22 +552,12 @@ body, html {
       background-color: white;
     }
     
-  
-    /*文件处理时加载图片*/
-    .processing-status {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: white;
-      width: 100%;
-      height: 100%;
-      z-index: 1; /* 确保加载图片位于进度条之上 */
+    .img-tool p{
+      position: absolute;
+      font-weight:10px;
+      margin-left: 1vh;
     }
-    
-    .processing-status img{
-      width: 20vh;
-      height: auto;
-    }
+
 
     .processing-message {
       font-size: 20px;
@@ -464,6 +578,19 @@ body, html {
     max-width: 450px;
     margin-bottom: 5vh;
   }
+  .input-container-hidden{
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+    max-width: 450px;
+    margin-bottom: 5vh;
+    visibility: hidden;
+  }
+
   
   .input-container:focus-within {
     border-color: #2981e6;
@@ -596,22 +723,59 @@ body, html {
     margin-left: 1vh;
     margin-right: 1vh;
     overflow: auto;
-    height: 39vh;
+    height: 38vh;
     display: flex;
-    background-color: #f4f4f4;
+    background-color: #F8F5FA;
     border-radius: 5px;
     margin-top: 1vh;
   }
+
+  /* 显示的表格 */
   .txt-content table {
     white-space: pre-wrap; /* 保留空白符序列，但是正常地进行换行 */
     word-wrap: break-word; /* 允许长单词或 URL 地址换行到下一行 */
     padding: 10px;
-    font-family: monospace;/* 设置字体为等宽字体 */
     width: 80vh;
     width: 100%;
     height: 100%;
     margin-top: 1vh;
+    border-collapse: collapse;
+    margin-left: 1vh;
+    margin-right: 1vh;
+    
   }
+
+  .txt-content table,td {
+    border: 2px dashed #444444; /* 2像素宽的灰色虚线边框 */
+    border-radius: 5px;
+  }
+  
+
+  /* 引入本地SVG作为滚动条样式 */
+  /* 设置滚动条的宽度 */
+::-webkit-scrollbar {
+  width: 7px;
+}
+/* 设置滚动条轨道的背景为自定义 SVG 文件。 */
+::-webkit-scrollbar-track {
+  background: url('../style/scrollbar.svg') no-repeat center;
+  background-size: contain;
+}
+
+/* 设置滚动条滑块的样式 */
+::-webkit-scrollbar-thumb {
+  background-color: #cecefa;
+  border-radius: 6px;
+}
+.txt-content::-webkit-scrollbar-thumb {
+  max-height: 200px;
+}
+/* 设置滚动条滑块在悬停时的样式。 */
+::-webkit-scrollbar-thumb:hover {
+  background: #7A7AFA;
+}
+
+
   .txt-close {
     margin-top: 1vh;
     margin-bottom: -2vh;
@@ -644,12 +808,10 @@ body, html {
   }
   .close-x{
     position: relative;
-    background-color: #00b1fc;
-    border: none;
-    margin-top: -2vh;
+
   }
   .close-btn-x{
-    top: -8px;
+    top: -2vh;
     right: 0;
     position: absolute;
     background-color: #ff9797;
@@ -669,11 +831,85 @@ body, html {
     
   }
   
-
-  table,td {
-    border: 1px dashed #444444; /* 2像素宽的灰色虚线边框 */
+  /* 警告弹窗Alert */
+  .custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
   }
   
+  iframe {
+    border: none;
+  }
+  
+  .textLayer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .textLayer span {
+    color: transparent;
+    position: absolute;
+    white-space: pre;
+    cursor: text;
+    pointer-events: all;
+    transform-origin: 0% 0%;
+  }
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .submit-button, 
+  .action-buttons .el-button {
+    width: 120px;
+    height: 40px;
+  }
+
+.pdf-controls {
+  margin-bottom: 5px;
+}
+#pdf-viewer {
+  overflow: auto;
+  width: 90vh;
+  height: 65vh;
+}
+
+.custom-upload .el-upload--picture-card {
+  width: 11vh; /* 设置宽度 */
+  height: 11vh; /* 设置高度 */
+  line-height: 10vh; /* 确保内部内容垂直居中 */
+  margin-top: 1vh;
+  
+}
+.custom-upload .el-upload-list__item {
+  width: 11vh !important; /* 设置宽度 */
+  height: 11vh !important; /* 设置高度 */
+  margin-top: 1vh !important;
+}
+.custom-upload .el-upload--picture-card{
+  display: none;
+}
+
+
+
+
+
+
   
   /**
    *                    _ooOoo_
@@ -696,5 +932,5 @@ body, html {
    *                    `=---='
    *
    * .............................................
-   *          佛祖保佑             永无BUG
+   *          佛祖保佑             妹有BUG
    */

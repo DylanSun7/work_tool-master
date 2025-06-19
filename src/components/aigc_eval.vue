@@ -10,15 +10,12 @@
 
         <!-- 左侧上传及处理区域 -->
         <div class="function-middle-left">
-          <div class="function-middle-title">
-            <img src="../assets/style/upload.png">
-            <p>上传&处理文件</p>
-          </div>
 
           <!-- 文件上传区域 -->
-          <div class="file-uploader" @drop.prevent="onDrop" @dragover.prevent>
+          <div  class="file-uploader" @drop.prevent="onDrop" @dragover.prevent  >
             <!-- 隐藏的文件输入框，用户点击上传按钮时触发 -->
-            <input
+             <div @click="openFileInput" class="upload-space" v-show="showFileDetails">
+              <input
               type="file"
               @change="onFileChange"
               ref="fileInput"
@@ -26,33 +23,46 @@
               accept=".zip,.rar,.7z"
             />
             <!-- 显示已选择的文件名 -->
-            <p v-if="file && showFileDetails">
+              <div id="upload" v-show="showFileDetails"></div>
+              <div>
+                <p v-if="file && showFileDetails">
               已选择文件：{{ file.name }} ({{ fileSize(file.size) }})
-              &nbsp;
-              <button @click="openFileInput">重新选择</button>
+              <br>
+              若要<strong>重新选择文件</strong>请将文件拖拽到这里，或者点击此区域<strong>重新选择文件</strong>
             </p>
             <p v-else-if="showFileDetails">
-              将文件拖到这里，或者
-              <button @click="openFileInput">点击上传</button>
+              将文件拖拽到这里，或者点击此区域<strong>选择文件</strong>进行上传
             </p>
+              </div>
+             </div>
 
             <!-- 进度条和上传进度文本，当有文件正在上传时显示 -->
             <div v-if="isUploading" class="upload-status">
               <div class="upload-status-out">
-                <div class="upload-status-in"><p>上传进度：</p></div>
-                <div class="upload-status-in"><progress :value="uploadProgress" max="100"></progress></div>
-                <div class="upload-status-in"><p>{{ uploadProgress }}%</p></div>
-              </div>
-              <div>
                 <!-- 显示已选择的文件名 -->
-                <p v-if="file">{{ file.name }}</p>
+                <p v-if="file" >{{ file.name }}</p>
               </div>
+              <div class="upload-status-out">
+                <div class="upload-status-in">
+                  <p>上传进度：</p>
+                  <el-progress
+                    :text-inside="true"
+                    :stroke-width="24"
+                    :percentage="uploadProgress"
+                    striped
+                    striped-flow
+                    :duration="5"
+                    :color="progressColor"
+                  />
+                </div>
+              </div>
+
             </div>
 
             <!-- 处理中的加载图片，覆盖进度条 -->
             <div v-if="isProcessing" class="processing-status">
               <img src="./tool-img/load.gif" alt="处理中" class="loading-image" />
-              <p class="processing-message">文件正在处理中。。。</p>
+              <p class="processing-message">文件正在处理中 。 。 。 </p>
             </div>
           </div>
 
@@ -62,9 +72,7 @@
         <div class="function-middle-right">
           <!-- 上传按钮，点击后打开文件选择对话框 -->
           <div class="upload-btn" v-if="!txtContent">
-            <form ref="uploadForm" @submit="handleSubmit($event)">
-              <p v-if="message">{{ message }}</p>
-              <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+            <form ref="uploadForm" @submit.prevent="handleSubmit">
 
               <button type="submit" class="submit-button" :disabled="isUploading || isProcessing">提&nbsp;&nbsp;交</button>
             </form>
@@ -76,7 +84,7 @@
               <button @click="closeTxtContent" class="close-btn-x">&times;</button>
             </div>
             <div class="txt-content">
-              <table v-if="tableData.length" style="border: 1;">
+              <table v-if="tableData.length" >
                 <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
                   <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
                 </tr>
@@ -104,10 +112,22 @@
       </div>
 
       <div class="text-content">
-        <p>功能: 结合提示词对图片进行匹配度评分</p>
-        <p>使用说明: 点击上传选择包含图片的zip格式压缩包文件<a>(上传的压缩包内包含同名的文件夹,文件夹名不能有中文)</a>,文件夹内含以英文提示词命名的文件夹<a>(提示词若包含空格应以“_”代替,例:mountain_range)</a>,提示词文件夹内为图片，选择文件后点击提交即可<a>(文件大小不能超过5G)</a></p>
+        <p>功能：结合提示词对图片进行匹配度评分</p>
+        <p>使用说明：点击上传选择包含图片的zip格式压缩包文件,文件夹内含以英文提示词命名的文件夹<a>(提示词若包含空格应以“_”代替,例:mountain_range)</a>,提示词文件夹内为图片，选择文件后点击提交即可</p>
+        <ul>
+          <li class="txt-content-li-out">注意：
+            <ul class="txt-content-li">
+              <li>上传的压缩包内包含同名的文件夹；</li>
+              <li>压缩包名只能为字母、数字、“_”和“-”的任意组合；</li>
+              <li>文件大小不能超过5G；</li>
+              <li>图片分辨率不能超过4K；</li>
+              <li>上传的图片仅支持'.jpg', '.png', '.jpeg', '.bmp'。</li>
+            </ul>
+          </li>
+        </ul>
       </div>
       <div class="img-tool">
+        <p>使用流程：</p>
         <img alt="Vue logo" src="./tool-explain/tool5.jpg" width="900px" height="auto" class="image">
       </div>
     </div>
@@ -117,76 +137,54 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import { saveAs } from 'file-saver'; // 保存文件的库
+import lottie from 'lottie-web';
+import animationData from '../assets/style/upload.json';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { useSelect_Check } from "@/select_check";
 
 export default {
+  mounted() {
+    lottie.loadAnimation({
+      container: document.getElementById('upload'), // 当前元素的ID
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      animationData: animationData, // JSON数据
+    });
+  },
   setup() {
-    const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5GB in bytes
-    const SUPPORTED_FORMATS = ['.zip', '.rar', '.7z'];// 支持的文件格式
 
-    // 存储选中的单个文件
-    const file = ref(null);
-    // 引用文件输入元素
-    const fileInput = ref(null);
-    // 标记是否正在上传文件
     const isUploading = ref(false);
-    // 记录上传进度
     const uploadProgress = ref(0);
-    // 消息提示
-    const message = ref('');
-    // 错误消息
-    const errorMessage = ref('');
-    // 标记文件是否正在处理
     const isProcessing = ref(false);
-    // 控制文件详情的显示
-    const showFileDetails = ref(true);
+
+    //设置进度条颜色渐变
+    const progressColor = [
+        { color: '#f56c6c', percentage: 20 },
+        { color: '#e6a23c', percentage: 40 },
+        { color: '#5cb87a', percentage: 60 },
+        { color: '#1989fa', percentage: 80 },
+        { color: '#6f7ad3', percentage: 100 },
+      ]
+
+    const {
+      file,
+      showFileDetails,
+      isLottieVisible,
+      fileInput,
+      handleSubmit,
+      fileSize,
+      openFileInput,
+      onFileChange,
+      onDrop,
+         
+    } = useSelect_Check();
     // 存储txt内容
     const txtContent = ref('');
     // 存储文件名
     const fileName = ref('default.txt');
 
-    // 打开文件选择器的方法
-    const openFileInput = () => {
-      if (fileInput.value) {
-        // 触发文件输入框的点击事件，打开文件选择对话框
-        fileInput.value.click();
-      }
-    };
-
-    // 当文件输入框的值改变时触发，即选择了新文件
-    const onFileChange = (event) => {
-      handleFileSelection(event.target.files[0]);
-    };
-
-    // 处理文件拖放事件
-    const onDrop = (event) => {
-      handleFileSelection(event.dataTransfer.files[0]);
-    };
-
-    const handleFileSelection = (selectedFile) => {
-      if (!selectedFile) {
-        return;
-      }
-
-      // 检查文件大小
-      if (selectedFile.size > MAX_FILE_SIZE) {
-        errorMessage.value = '文件大小不能超过5G！';
-        return;
-      }
-
-      // 检查文件格式
-      const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
-      if (!SUPPORTED_FORMATS.includes(`.${fileExtension}`)) {
-        errorMessage.value = '不支持的文件格式，请选择 .zip, .rar 或 .7z 文件！';
-        return;
-      }
-
-      // 保存选中的文件到 file 变量中
-      file.value = selectedFile;
-      errorMessage.value = ''; // 清除错误消息
-    };
-
-// 添加解析txtContent的方法
+    // 解析txtContent的方法
 const parseTxtContentToTable = (txtContent) => {
   // 假设每一行代表表格的一行，每一行中的每个元素代表表格的一个单元格
   const rows = txtContent.trim().split('\n');
@@ -196,19 +194,7 @@ const parseTxtContentToTable = (txtContent) => {
 // 添加一个响应式变量来存储解析后的表格数据
 const tableData = ref([]);
 
-// 在handleSubmit方法中调用parseTxtContentToTable方法，并将结果赋值给tableData
-    const handleSubmit = async (event) => {
-      event.preventDefault(); // 阻止表单的默认提交行为
-
-      // 检查文件是否为空
-      if (!file.value) {
-        errorMessage.value = '请选择一个文件进行上传！';
-        return;
-      }
-      
-      await uploadFile();
-    };
-
+   
     // 开始上传文件
     const uploadFile = async () => {
       if (!file.value) return; // 如果没有文件则不执行
@@ -216,8 +202,6 @@ const tableData = ref([]);
       isUploading.value = true; // 设置为正在上传状态
       uploadProgress.value = 0; // 重置上传进度
       isProcessing.value = false; // 确保在上传开始前关闭处理状态
-      message.value = ''; // 清除任何旧的消息
-      errorMessage.value = ''; // 清除任何旧的错误消息
       showFileDetails.value = false; // 隐藏文件详情
 
       try {
@@ -264,36 +248,97 @@ const tableData = ref([]);
         tableData.value = parseTxtContentToTable(txtContent.value);
 
         // 显示文件处理成功的消息
-        message.value = '文件处理成功.';
-
-        // 清空信息
-        setTimeout(() => {
-          message.value = '';
-        }, 5000); // 设置多少时间后清空消息，5000ms
+        ElMessage({
+          message: '文件处理成功',
+          type: 'success',
+          duration: 5000,
+          showClose: true
+        });
       } catch (error) {
-        // 捕获并处理上传错误
-        console.error("文件处理失败:", error);
-        errorMessage.value = '文件处理失败！';
-        // 清空进度条
-        isUploading.value = false;
-        uploadProgress.value = 0;
+  if (error.response) {
+    // 检查响应类型是否为 text
+    if (error.config.responseType === 'text') {
+      // 处理纯文本响应
+      const errorMsg = error.response.data || error.response.statusText || '未知错误';
 
-        // 提示用户可以再次上传
-        setTimeout(() => {
-          if (!message.value) {
-            message.value = '您可以尝试再次上传';
-          }
-        }, 2000);
-      } finally {
-        isProcessing.value = false; // 关闭处理状态
-        file.value = null; // 清除已选择的文件
-        if (fileInput.value) {
-          fileInput.value.value = ''; // 重置文件输入框
-        }
-        showFileDetails.value = true; // 显示文件详情
+      try {
+        // 解析 JSON 字符串
+        const jsonObject = JSON.parse(errorMsg);
+
+        // 提取错误信息
+        const errorMessage = jsonObject.error;
+        const decodedErrorMessage = decodeURIComponent(errorMessage);
+
+        // 显示错误信息
+      ElMessageBox.alert(
+        decodedErrorMessage,
+          {
+          title:'错误！',
+          type: 'error',
+          confirmButtonText: '确认',
+          callback: () => {
+          ElMessage({
+            type: 'warning',
+            message: `注意查看使用说明及流程！`,
+          });
+        },
+       })
+      } catch  {
+        // 如果解析失败，显示原始错误信息
+        ElMessageBox({
+    message: errorMsg,
+    title: '错误',
+    type: 'error',
+    showCancelButton: true
+  });
       }
-    };
+    } else {
+      // 处理 JSON 响应
+      const errorMsg = error.response.data?.error 
+        || error.response.data?.message 
+        || error.response.statusText 
+        || '请求处理失败';
+      
+      // 解码 Unicode 转义字符
+      const decodedErrorMsg = decodeURIComponent(errorMsg);
 
+      // 显示错误信息
+      ElMessageBox({
+        title:'错误！',
+        message: decodedErrorMsg,
+        type: 'error',
+        duration: 0,
+        showClose: true
+      });
+    }
+
+    // 打印详细错误信息以帮助调试
+    // console.error('Error response:', error.response);
+  } else {
+    // 网络错误或服务器无响应
+    ElMessageBox({
+      title:'错误！',
+      message: '网络错误或服务器无响应',
+      type: 'error',
+      duration: 0,
+      showClose: true
+    });
+  }
+
+    // 清空进度条
+    isUploading.value = false;
+    uploadProgress.value = 0;
+  } finally {
+    // 关闭处理状态
+    isProcessing.value = false;
+    file.value = null; // 清除已选择的文件
+    if (fileInput.value) {
+      fileInput.value.value = ''; // 重置文件输入框
+    }
+    showFileDetails.value = true; // 显示文件详情
+        isLottieVisible.value = true;// 显示动画
+  }
+};
     // 下载txt文件的方法
     const downloadTxt = () => {
       const blob = new Blob([txtContent.value], { type: 'text/plain' });
@@ -305,13 +350,7 @@ const tableData = ref([]);
       txtContent.value = '';
     };
 
-    const fileSize = (size) => {
-      if (size === 0) return '0 Bytes';
-      const k = 1024;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-      const i = Math.floor(Math.log(size) / Math.log(k));
-      return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    };
+    
 
     // 返回需要在模板中使用的变量和方法
     return {
@@ -323,16 +362,15 @@ const tableData = ref([]);
       onDrop,
       isUploading,
       uploadProgress,
-      message,
-      errorMessage,
       isProcessing,
       showFileDetails,
-      handleSubmit,
+      handleSubmit: (event) => handleSubmit(event, uploadFile),
       txtContent,
       downloadTxt,
       closeTxtContent,
       fileSize,
       tableData,
+      progressColor
     };
   },
 };
