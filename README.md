@@ -15,7 +15,7 @@ json格式化、文件重命名<br>
 
 通过配置`vue.config.js`连接至后端，实现前后端分离<br>
 
-    ```javascipt
+```javascipt
      devServer: {
     proxy: {
       '/api': {
@@ -25,7 +25,7 @@ json格式化、文件重命名<br>
       },
     },
     },
-    ```
+```
     
 在`src\config`下的`api.js`获取API配置
 
