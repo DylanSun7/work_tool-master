@@ -6,7 +6,11 @@ json格式化、文件重命名<br>
 <img width="960" alt="image" src="https://github.com/user-attachments/assets/41251377-b673-4a4c-8413-aecd30af5312" />
 
 <br>
+### 本地部署
 
+本地安装[Node.js](https://nodejs.org/zh-cn)<br>
+通过`npm`安装本地服务第三方依赖模块
 
+  npm install 或 cnpm install
 
 
