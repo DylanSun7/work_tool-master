@@ -8,6 +8,5 @@ json格式化、文件重命名<br>
 
 本地安装[Node.js](https://nodejs.org/zh-cn)<br>
 通过`npm`安装本地服务第三方依赖模块
-
-  `npm install 或 cnpm install`
+  npm install 或 cnpm install
 
