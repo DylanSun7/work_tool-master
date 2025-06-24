@@ -50,45 +50,45 @@ json格式化、文件重命名<br>
 * 使用正则表达式验证文件名是否包含非法字符<br>
 * 监听文件上传进度，计算文件上传进度实现上传进度条的功能<br>
 * 处理后端json响应，以ElMessage提示文件处理的结果或错误信息<br>
-* 集成文件
+* 集成文件验证上传后端交互逻辑，优化性能<br>
 
 ## 目录结构
 
     tool
     ├─ public
-    │  ├─ favicon.ico         //网页窗口图标
+    │  ├─ favicon.ico           //网页窗口图标
     │  └─ index.html
-    ├─ src                    //项目目录
-    │  ├─ App.vue             //主页最外层
-    │  ├─ assets              //资源文件夹
+    ├─ src                      //项目目录
+    │  ├─ App.vue               //主页最外层
+    │  ├─ assets                //资源文件夹
     │  │  ├─ style
-    │  │  │  ├─ app.css       //css样式
-    │  │  │  ├─ tool-title   //存放图标文件夹
-    │  │  │  └─ upload.json //Lottie加载动画
-    │  │  └─ work.mp4 主页背景动画
-    │  ├─ components 组件文件夹
-    │  │  ├─ aigc_eval.vue 文生图评分
-    │  │  ├─ check_file.vue 图片损坏检测
-    │  │  ├─ convert_image.vue 图片格式转换
-    │  │  ├─ cut_video.vue 视频抽帧
-    │  │  ├─ dedup_data.vue 图片去重
-    │  │  ├─ detect_eval.vue 目标检测模型评价
-    │  │  ├─ format_json.vue json格式化
-    │  │  ├─ ocr_image.vue OCR图片筛选
-    │  │  ├─ ocr_text.vue OCR文本提取
-    │  │  ├─ rename_file.vue 件重命名
-    │  │  ├─ split_data.vue 数据切分
-    │  │  ├─ tool-explain 流程图文件夹
+    │  │  │  ├─ app.css         //css样式
+    │  │  │  ├─ tool-title      //存放图标文件夹
+    │  │  │  └─ upload.json     //Lottie加载动画
+    │  │  └─ work.mp4           //主页背景动画
+    │  ├─ components            //组件文件夹
+    │  │  ├─ aigc_eval.vue      //文生图评分
+    │  │  ├─ check_file.vue     //图片损坏检测
+    │  │  ├─ convert_image.vue  //图片格式转换
+    │  │  ├─ cut_video.vue      //视频抽帧
+    │  │  ├─ dedup_data.vue     //图片去重
+    │  │  ├─ detect_eval.vue    //目标检测模型评价
+    │  │  ├─ format_json.vue    //json格式化
+    │  │  ├─ ocr_image.vue      //OCR图片筛选
+    │  │  ├─ ocr_text.vue       //OCR文本提取
+    │  │  ├─ rename_file.vue    //文件重命名
+    │  │  ├─ split_data.vue     //数据切分
+    │  │  ├─ tool-explain       //流程图文件夹
     │  │  └─ tool-img 
-    │  │     └─ load.gif 文件处理时显示的动画
+    │  │     └─ load.gif        //文件处理时显示的动画
     │  ├─ config
-    │  │  └─ api.js 后端api配置文件
-    │  ├─ Home.vue 首页
-    │  ├─ main.js 配置静态资源文件
-    │  ├─ navigation.vue 左侧导航栏配置文件
+    │  │  └─ api.js             //后端api配置文件
+    │  ├─ Home.vue              //首页
+    │  ├─ main.js               //配置静态资源文件
+    │  ├─ navigation.vue        //左侧导航栏配置文件
     │  ├─ router
-    │  │  └─ index.js 配置路由，主页跳转链接文件
-    │  ├─ select_check.js 集成文件选择及检测文件逻辑文件
-    │  └─ upload.js 集成文件上传后端信息返回逻辑文件
-    └─ vue.config.js 配置前后端分离文件
+    │  │  └─ index.js           //配置路由，主页跳转链接文件
+    │  ├─ select_check.js       //集成文件选择及检测文件逻辑文件
+    │  └─ upload.js             //集成文件上传后端信息返回逻辑文件
+    └─ vue.config.js            //配置前后端分离文件
     ```
