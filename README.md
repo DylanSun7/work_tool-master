@@ -13,7 +13,8 @@ json格式化、文件重命名<br>
     启动 npm run serve
 ### 关于接口
 
-通过配置`vue.config.js`连接至后端，实现前后端分离
+通过配置`vue.config.js`连接至后端，实现前后端分离<br>
+
      ```javascipt
      devServer: {
     proxy: {
