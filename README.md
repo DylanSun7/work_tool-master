@@ -4,9 +4,9 @@
 文生图评分、OCR图片筛选、OCR文本提取、目标检测模型评价；<br>
 json格式化、文件重命名<br>
 <img width="960" alt="image" src="https://github.com/user-attachments/assets/41251377-b673-4a4c-8413-aecd30af5312" />
-### 本地部署
+## 本地部署
 
 本地安装[Node.js](https://nodejs.org/zh-cn)<br>
 通过`npm`安装本地服务第三方依赖模块
-  npm install 或 cnpm install
+```npm install 或 cnpm install```
 
