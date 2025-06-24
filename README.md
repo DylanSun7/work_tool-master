@@ -29,7 +29,7 @@ json格式化、文件重命名<br>
     
 在`src\config`下的`api.js`获取API配置
 
-    ```javascipt
+```javascipt
     checkFile: {
       url: '/api/check_img',
       field: 'file'
@@ -42,4 +42,4 @@ json格式化、文件重命名<br>
       url: '/api/ocr_image',
       field: 'file'
     },
-    ```
+```
