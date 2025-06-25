@@ -64,7 +64,7 @@ json格式化、文件重命名<br>
     │  │  ├─ style
     │  │  │  ├─ app.css         //css样式
     │  │  │  ├─ tool-title      //存放图标文件夹
-    │  │  │  └─ upload.json     //Lottie加载动画
+    │  │  │  └─ upload.json     //Lottie动画
     │  │  └─ work.mp4           //主页背景动画
     │  ├─ components            //组件文件夹
     │  │  ├─ aigc_eval.vue      //文生图评分
@@ -92,3 +92,15 @@ json格式化、文件重命名<br>
     │  └─ upload.js             //集成文件上传后端信息返回逻辑文件
     └─ vue.config.js            //配置前后端分离文件
     ```
+
+## 项目效果图
+
+![image](https://github.com/user-attachments/assets/a25a94ac-03f3-465a-bb78-f2f5716f3c4e)
+
+![image](https://github.com/user-attachments/assets/54d8242f-16a7-4a5b-a6fd-fa43bbd9244b)
+
+![image](https://github.com/user-attachments/assets/3ebe3762-e1d5-46b4-9c92-20f9b34e0754)
+
+![image](https://github.com/user-attachments/assets/5eaa14d2-b524-447d-9b3a-e75cfa9b7f15)
+
+
