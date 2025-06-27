@@ -106,5 +106,5 @@ json格式化、文件重命名<br>
 ## 资源网页
 
 [图标](www.iconfont.cn)<br>
-[el组件]([www.iconfont.cn](https://element-plus.org/zh-CN/component/overview.html)<br>
+[el组件](https://element-plus.org/zh-CN/component/overview.html)<br>
 
